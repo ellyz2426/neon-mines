@@ -37,6 +37,14 @@
       <text fontSize="12" color="#888">Rating</text>
       <text name="result-rating" fontSize="12" fontWeight="bold" color="#ff0">S</text>
     </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">XP Earned</text>
+      <text name="result-xp-earned" fontSize="12" fontWeight="bold" color="#0f8">+0</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Level</text>
+      <text name="result-level" fontSize="12" fontWeight="bold" color="#0ff">1</text>
+    </container>
   </container>
   <container flexDirection="row" gap="8" marginTop="4">
     <text name="btn-rematch" fontSize="14" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="5" borderRadius="6" borderColor="#0f06" borderWidth="1" cursor="pointer" hover-backgroundColor="#0f04">REMATCH</text>

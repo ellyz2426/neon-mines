@@ -1,0 +1,84 @@
+<container flexDirection="column" alignItems="center" gap="4" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#0ff">GAME HISTORY</text>
+  <text name="hist-subtitle" fontSize="10" color="#8888">Last 10 Games</text>
+  <container flexDirection="column" gap="3" width="260">
+    <container flexDirection="row" justifyContent="space-between" padding="2" backgroundColor="#0ff1" borderRadius="4">
+      <text fontSize="8" fontWeight="bold" color="#0ff8" width="30">MODE</text>
+      <text fontSize="8" fontWeight="bold" color="#0ff8" width="30">DIFF</text>
+      <text fontSize="8" fontWeight="bold" color="#0ff8" width="35">RESULT</text>
+      <text fontSize="8" fontWeight="bold" color="#0ff8" width="30">TIME</text>
+      <text fontSize="8" fontWeight="bold" color="#0ff8" width="25">RATE</text>
+    </container>
+    <container name="h0-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h0-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h0-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h0-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h0-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h0-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h1-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h1-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h1-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h1-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h1-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h1-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h2-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h2-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h2-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h2-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h2-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h2-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h3-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h3-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h3-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h3-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h3-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h3-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h4-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h4-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h4-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h4-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h4-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h4-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h5-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h5-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h5-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h5-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h5-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h5-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h6-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h6-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h6-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h6-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h6-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h6-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h7-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h7-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h7-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h7-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h7-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h7-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h8-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h8-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h8-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h8-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h8-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h8-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+    <container name="h9-row" flexDirection="row" justifyContent="space-between" padding="2">
+      <text name="h9-mode" fontSize="9" color="#888" width="30">-</text>
+      <text name="h9-diff" fontSize="9" color="#888" width="30">-</text>
+      <text name="h9-result" fontSize="9" color="#888" width="35">-</text>
+      <text name="h9-time" fontSize="9" color="#888" width="30">-</text>
+      <text name="h9-rate" fontSize="9" color="#888" width="25">-</text>
+    </container>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

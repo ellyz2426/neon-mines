@@ -45,7 +45,7 @@ interface KeyboardLike {
 // ============================================================
 // TYPES & CONFIG
 // ============================================================
-type GameState = 'title' | 'modeselect' | 'difficulty' | 'playing' | 'paused' | 'won' | 'lost' | 'leaderboard' | 'achievements' | 'stats' | 'settings' | 'help';
+type GameState = 'title' | 'modeselect' | 'difficulty' | 'playing' | 'paused' | 'won' | 'lost' | 'leaderboard' | 'achievements' | 'stats' | 'settings' | 'help' | 'history';
 type GameMode = 'classic' | 'timed' | 'noflag' | 'daily' | 'zen' | 'practice';
 type Difficulty = 'easy' | 'medium' | 'hard';
 
@@ -83,6 +83,7 @@ const THEMES: Theme[] = [
 
 interface Achievement { id: string; name: string; desc: string; check: () => boolean; }
 interface LeaderEntry { time: number; grid: string; mode: string; date: string; }
+interface HistoryEntry { mode: string; diff: string; won: boolean; time: number; rating: string; date: string; }
 
 // Undo stack for practice mode
 interface UndoState {
@@ -139,6 +140,7 @@ class GameStateManager {
   };
   achievements: Set<string> = new Set();
   leaderboard: LeaderEntry[] = [];
+  history: HistoryEntry[] = [];
   // Audio
   masterVol = 100; sfxVol = 100; musicVol = 100;
   // XP
@@ -401,9 +403,13 @@ class GameStateManager {
       if (this.difficulty === 'medium' && t < this.stats.bestMedium) this.stats.bestMedium = t;
       if (this.difficulty === 'hard' && t < this.stats.bestHard) this.stats.bestHard = t;
       const baseXP = Math.floor(this.mineCount * 10 + (300 - Math.min(this.elapsedTime, 300)));
+      const prevLevel = this.level;
       this.xp += baseXP + this.comboXPBonus;
       const lvl = Math.floor(this.xp / (100 + this.level * 50)) + 1;
-      if (lvl > this.level) this.level = lvl;
+      if (lvl > this.level) {
+        this.level = lvl;
+        // Level up is handled by checking prevLevel in the system
+      }
       this.leaderboard.push({ time: this.elapsedTime, grid: `${this.rows}x${this.cols}`, mode: this.mode, date: new Date().toLocaleDateString() });
       this.leaderboard.sort((a, b) => a.time - b.time);
       if (this.leaderboard.length > 20) this.leaderboard.length = 20;
@@ -415,6 +421,16 @@ class GameStateManager {
       this.state = 'lost';
     }
     this.stats.totalHintsUsed += this.hintsUsedThisGame;
+    // Record game history
+    this.history.unshift({
+      mode: this.mode,
+      diff: this.difficulty,
+      won,
+      time: this.elapsedTime,
+      rating: won ? this.getRating() : 'X',
+      date: new Date().toLocaleDateString(),
+    });
+    if (this.history.length > 10) this.history.length = 10;
     this.save();
   }
 
@@ -451,6 +467,7 @@ class GameStateManager {
       localStorage.setItem('neon-mines-lb', JSON.stringify(this.leaderboard));
       localStorage.setItem('neon-mines-xp', JSON.stringify({ xp: this.xp, level: this.level }));
       localStorage.setItem('neon-mines-settings', JSON.stringify({ master: this.masterVol, sfx: this.sfxVol, music: this.musicVol, theme: this.themeIndex }));
+      localStorage.setItem('neon-mines-history', JSON.stringify(this.history));
     } catch {}
   }
 
@@ -466,6 +483,8 @@ class GameStateManager {
       if (xp) { const d = JSON.parse(xp); this.xp = d.xp; this.level = d.level; }
       const set = localStorage.getItem('neon-mines-settings');
       if (set) { const d = JSON.parse(set); this.masterVol = d.master; this.sfxVol = d.sfx; this.musicVol = d.music; this.themeIndex = d.theme ?? 0; }
+      const hist = localStorage.getItem('neon-mines-history');
+      if (hist) this.history = JSON.parse(hist);
     } catch {}
   }
 }
@@ -689,6 +708,11 @@ class AudioManager {
     notes.forEach((f, i) => setTimeout(() => this.playTone(f, 0.2, 'triangle', 0.1), i * 60));
   }
 
+  playLevelUp() {
+    const notes = [440, 554, 659, 880, 1047, 1319, 1568];
+    notes.forEach((f, i) => setTimeout(() => this.playTone(f, 0.25, 'triangle', 0.12), i * 70));
+  }
+
   playClick() { this.playTone(600, 0.05, 'sine', 0.08); }
   playCountdown() { this.playTone(440, 0.12, 'sine', 0.12); }
   playGo() { this.playTone(880, 0.2, 'sine', 0.15); }
@@ -814,8 +838,17 @@ interface TileMesh {
   questionMesh: Mesh | null;
   mineMesh: Mesh | null;
   glowMesh: Mesh | null;
+  neighborHighlight: Mesh | null;
   r: number;
   c: number;
+}
+
+interface BoardEntryAnim {
+  r: number; c: number;
+  delay: number;
+  elapsed: number;
+  duration: number;
+  done: boolean;
 }
 
 interface RevealAnim {
@@ -833,8 +866,11 @@ class MinefieldRenderer {
   hoverR = -1;
   hoverC = -1;
   revealAnims: RevealAnim[] = [];
+  entryAnims: BoardEntryAnim[] = [];
+  coordLabels: Mesh[] = [];
+  neighborHighlightedTiles: { r: number; c: number }[] = [];
 
-  build(rows: number, cols: number, theme: Theme) {
+  build(rows: number, cols: number, theme: Theme, animated = false) {
     this.clear();
     this.boardWidth = cols * (TILE_SIZE + TILE_GAP);
     this.boardHeight = rows * (TILE_SIZE + TILE_GAP);
@@ -885,7 +921,19 @@ class MinefieldRenderer {
         glow.position.set(x, y, TILE_DEPTH + 0.002);
         this.group.add(glow);
 
-        this.tiles[r][c] = { base, coverMesh: cover, numberMesh: null, flagMesh: null, questionMesh: null, mineMesh: null, glowMesh: glow, r, c };
+        this.tiles[r][c] = { base, coverMesh: cover, numberMesh: null, flagMesh: null, questionMesh: null, mineMesh: null, glowMesh: glow, neighborHighlight: null, r, c };
+
+        // Board entry animation: stagger from center outward
+        if (animated) {
+          const centerR = (rows - 1) / 2;
+          const centerC = (cols - 1) / 2;
+          const dist = Math.sqrt((r - centerR) ** 2 + (c - centerC) ** 2);
+          const maxDist = Math.sqrt(centerR ** 2 + centerC ** 2);
+          const delay = (dist / maxDist) * 0.5;
+          cover.scale.set(0, 0, 0);
+          cover.visible = true;
+          this.entryAnims.push({ r, c, delay, elapsed: 0, duration: 0.25, done: false });
+        }
       }
     }
   }
@@ -1031,7 +1079,66 @@ class MinefieldRenderer {
 
   clearHover() { this.setHover(-1, -1); }
 
+  // Highlight neighbors of a revealed numbered tile for QoL
+  highlightNeighbors(r: number, c: number, rows: number, cols: number, revealed: boolean[][], flagged: boolean[][], theme: Theme) {
+    this.clearNeighborHighlights();
+    if (r < 0 || c < 0) return;
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        const nr = r + dr, nc = c + dc;
+        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+          if (!revealed[nr]?.[nc] && !flagged[nr]?.[nc]) {
+            const tile = this.tiles[nr]?.[nc];
+            if (tile && tile.coverMesh.visible) {
+              // Create neighbor highlight mesh
+              const hlMat = new MeshBasicMaterial({ color: new Color(theme.glow), transparent: true, opacity: 0.25, blending: AdditiveBlending });
+              const hl = new Mesh(new PlaneGeometry(TILE_SIZE * 1.05, TILE_SIZE * 1.05), hlMat);
+              const pos = tile.coverMesh.position.clone();
+              hl.position.set(pos.x, pos.y, TILE_DEPTH + 0.004);
+              this.group.add(hl);
+              tile.neighborHighlight = hl;
+              this.neighborHighlightedTiles.push({ r: nr, c: nc });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  clearNeighborHighlights() {
+    for (const { r, c } of this.neighborHighlightedTiles) {
+      const tile = this.tiles[r]?.[c];
+      if (tile?.neighborHighlight) {
+        this.group.remove(tile.neighborHighlight);
+        tile.neighborHighlight = null;
+      }
+    }
+    this.neighborHighlightedTiles = [];
+  }
+
   updateAnimations(time: number, delta: number) {
+    // Animate board entry (tiles pop in from center outward)
+    for (let i = this.entryAnims.length - 1; i >= 0; i--) {
+      const anim = this.entryAnims[i];
+      if (anim.done) { this.entryAnims.splice(i, 1); continue; }
+      anim.elapsed += delta;
+      if (anim.elapsed < anim.delay) continue;
+      const t = Math.min((anim.elapsed - anim.delay) / anim.duration, 1);
+      const tile = this.tiles[anim.r]?.[anim.c];
+      if (tile) {
+        // Elastic ease-out
+        const p = 1 - Math.pow(1 - t, 3) * Math.cos(t * Math.PI * 0.5);
+        tile.coverMesh.scale.set(p, p, p);
+        if (t >= 1) {
+          tile.coverMesh.scale.set(1, 1, 1);
+          anim.done = true;
+        }
+      } else {
+        anim.done = true;
+      }
+    }
+
     // Animate cover reveal (scale down)
     for (let i = this.revealAnims.length - 1; i >= 0; i--) {
       const anim = this.revealAnims[i];
@@ -1074,6 +1181,11 @@ class MinefieldRenderer {
         if (tile.numberMesh) {
           tile.numberMesh.rotation.y = Math.sin(time * 0.8 + r + c) * 0.3;
         }
+        // Pulse neighbor highlights
+        if (tile.neighborHighlight) {
+          (tile.neighborHighlight.material as MeshBasicMaterial).opacity =
+            0.15 + 0.15 * Math.sin(time * 3);
+        }
       }
     }
   }
@@ -1085,6 +1197,9 @@ class MinefieldRenderer {
     this.tiles = [];
     this.hoverR = -1; this.hoverC = -1;
     this.revealAnims = [];
+    this.entryAnims = [];
+    this.neighborHighlightedTiles = [];
+    this.coordLabels = [];
   }
 }
 
@@ -1142,9 +1257,13 @@ function buildEnvironment(scene: Object3D, theme: Theme) {
 
   const accent1 = new PointLight(new Color(theme.accent).getHex(), 0.5, 10);
   accent1.position.set(-2, 2.5, -1);
+  accent1.userData.isAccentLight = true;
+  accent1.userData.baseIntensity = 0.5;
   scene.add(accent1);
   const accent2 = new PointLight(new Color(theme.glow).getHex(), 0.3, 10);
   accent2.position.set(2, 2, 1);
+  accent2.userData.isAccentLight = true;
+  accent2.userData.baseIntensity = 0.3;
   scene.add(accent2);
   const dir = new DirectionalLight(0xffffff, 0.3);
   dir.position.set(0, 5, 3);
@@ -1159,12 +1278,16 @@ function buildEnvironment(scene: Object3D, theme: Theme) {
   });
 }
 
-function animateEnvironment(scene: Object3D, time: number) {
+function animateEnvironment(scene: Object3D, time: number, comboLevel = 0, dangerLevel = 0) {
   scene.traverse(c => {
     if (c.userData.isDeco) {
       c.rotation.y += c.userData.rotSpeed * 0.01;
       c.rotation.x += c.userData.rotSpeed * 0.005;
       c.position.y = c.userData.baseY + Math.sin(time * c.userData.bobSpeed + c.userData.bobOffset) * 0.15;
+      // Speed up rotation during high combos
+      if (comboLevel > 5) {
+        c.rotation.y += c.userData.rotSpeed * 0.02 * Math.min(comboLevel / 15, 1);
+      }
     }
     if (c.userData.isAmbient) {
       c.position.x += c.userData.driftX * 0.01;
@@ -1174,8 +1297,18 @@ function animateEnvironment(scene: Object3D, time: number) {
       if (c.position.y < 0 || c.position.y > 4) c.userData.driftY *= -1;
       if (Math.abs(c.position.z) > 6) c.userData.driftZ *= -1;
       if ((c as Mesh).material && ((c as Mesh).material as MeshBasicMaterial).opacity !== undefined) {
-        ((c as Mesh).material as MeshBasicMaterial).opacity = 0.1 + 0.1 * Math.sin(time * (c.userData.pulseSpeed ?? 1) + (c.userData.pulseOffset ?? 0));
+        const baseOpacity = 0.1 + 0.1 * Math.sin(time * (c.userData.pulseSpeed ?? 1) + (c.userData.pulseOffset ?? 0));
+        // Brighten ambient particles during combos
+        const comboBoost = Math.min(comboLevel / 20, 0.5);
+        ((c as Mesh).material as MeshBasicMaterial).opacity = baseOpacity + comboBoost * 0.1;
       }
+    }
+    // Reactive accent lights
+    if (c.userData.isAccentLight && c instanceof PointLight) {
+      const base = c.userData.baseIntensity ?? 0.5;
+      const comboPulse = comboLevel > 3 ? Math.sin(time * (2 + comboLevel * 0.3)) * 0.3 * Math.min(comboLevel / 15, 1) : 0;
+      const dangerPulse = dangerLevel > 0 ? Math.sin(time * 4) * 0.2 * dangerLevel : 0;
+      c.intensity = base + comboPulse + dangerPulse;
     }
   });
 }
@@ -1236,6 +1369,7 @@ export class MinesweeperSystem extends createSystem({
   toastPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/toast.json')] },
   countdownPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/countdown.json')] },
   tileinfoPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/tileinfo.json')] },
+  historyPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/history.json')] },
 }) {
   entities: Record<string, Entity> = {};
   toastTimer = 0;
@@ -1382,6 +1516,7 @@ export class MinesweeperSystem extends createSystem({
       this.btn(e, 'btn-stats', () => { GM.state = 'stats'; audio.playClick(); this.updateVisibility(); this.updateStats(); });
       this.btn(e, 'btn-settings', () => { GM.state = 'settings'; audio.playClick(); this.updateVisibility(); this.updateSettings(); });
       this.btn(e, 'btn-help', () => { GM.state = 'help'; audio.playClick(); this.updateVisibility(); });
+      this.btn(e, 'btn-history', () => { GM.state = 'history'; audio.playClick(); this.updateVisibility(); this.updateHistory(); });
       this.setText(e, 'level-text', `Level ${GM.level} - ${getLevelTitle(GM.level)}`);
       this.updateVisibility();
     });
@@ -1459,6 +1594,7 @@ export class MinesweeperSystem extends createSystem({
         localStorage.clear();
       Object.assign(GM.stats, { games:0,wins:0,bestEasy:Infinity,bestMedium:Infinity,bestHard:Infinity,tilesRevealed:0,minesFlagged:0,minesDetonated:0,winStreak:0,bestStreak:0,playTime:0,easyWins:0,mediumWins:0,hardWins:0,bestCombo:0,totalHintsUsed:0,dailyStreak:0,bestDailyStreak:0,lastDailyDate:'',perfectGames:0,totalChords:0,totalUndos:0,autoFlagGames:0,questionsPlaced:0 });
         GM.achievements.clear(); GM.leaderboard = []; GM.xp = 0; GM.level = 1; modeWins.clear();
+        GM.history = [];
         this.themesPlayed.clear();
         this.updateSettings();
       });
@@ -1472,6 +1608,10 @@ export class MinesweeperSystem extends createSystem({
     this.queries.toastPanel.subscribe('qualify', (e) => { this.entities.toast = e; if (e.object3D) e.object3D.visible = false; });
     this.queries.countdownPanel.subscribe('qualify', (e) => { this.entities.countdown = e; if (e.object3D) e.object3D.visible = false; });
     this.queries.tileinfoPanel.subscribe('qualify', (e) => { this.entities.tileinfo = e; if (e.object3D) e.object3D.visible = false; });
+    this.queries.historyPanel.subscribe('qualify', (e) => {
+      this.entities.history = e; if (e.object3D) e.object3D.visible = false;
+      this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); this.updateVisibility(); });
+    });
 
     // Tile info panel — no wiring needed, updated on hover
     // Load themes played from localStorage
@@ -1614,7 +1754,7 @@ export class MinesweeperSystem extends createSystem({
       this.pendingCountdownDiff = diff;
       GM.startGame(mode, diff);
       GM.timerRunning = false; // Don't start timer until countdown finishes
-      minefield.build(GM.rows, GM.cols, GM.theme);
+      minefield.build(GM.rows, GM.cols, GM.theme, true);
       minefield.group.position.set(0, transform.y, transform.z);
       minefield.group.scale.setScalar(transform.scale);
       world.scene.add(minefield.group);
@@ -1622,7 +1762,7 @@ export class MinesweeperSystem extends createSystem({
       audio.playCountdown();
     } else {
       GM.startGame(mode, diff);
-      minefield.build(GM.rows, GM.cols, GM.theme);
+      minefield.build(GM.rows, GM.cols, GM.theme, true);
       minefield.group.position.set(0, transform.y, transform.z);
       minefield.group.scale.setScalar(transform.scale);
       world.scene.add(minefield.group);
@@ -1654,6 +1794,7 @@ export class MinesweeperSystem extends createSystem({
       hud: s === 'playing', pause: s === 'paused', gameover: s === 'won',
       explosion: s === 'lost', lb: s === 'leaderboard', ach: s === 'achievements',
       stats: s === 'stats', settings: s === 'settings', help: s === 'help',
+      history: s === 'history',
     };
     for (const [key, entity] of Object.entries(this.entities)) {
       if (key === 'toast' || key === 'countdown') continue;
@@ -1694,6 +1835,9 @@ export class MinesweeperSystem extends createSystem({
     this.setText(e, 'result-hints', `${GM.hintsUsedThisGame}`);
     this.setText(e, 'result-combobonus', `+${GM.comboXPBonus} XP`);
     this.setText(e, 'result-rating', GM.getRating());
+    const baseXP = Math.floor(GM.mineCount * 10 + (300 - Math.min(GM.elapsedTime, 300)));
+    this.setText(e, 'result-xp-earned', `+${baseXP + GM.comboXPBonus}`);
+    this.setText(e, 'result-level', `${GM.level} - ${getLevelTitle(GM.level)}`);
   }
 
   updateExplosion() {
@@ -1778,6 +1922,27 @@ export class MinesweeperSystem extends createSystem({
     this.setText(e, 'vol-sfx', `${GM.sfxVol}`);
     this.setText(e, 'vol-music', `${GM.musicVol}`);
     this.setText(e, 'theme-name', GM.theme.name);
+  }
+
+  updateHistory() {
+    const e = this.entities.history;
+    if (!e) return;
+    for (let i = 0; i < 10; i++) {
+      const entry = GM.history[i];
+      if (entry) {
+        this.setText(e, `h${i}-mode`, entry.mode.toUpperCase().slice(0, 6));
+        this.setText(e, `h${i}-diff`, entry.diff.toUpperCase().slice(0, 4));
+        this.setText(e, `h${i}-result`, entry.won ? 'WIN' : 'LOSS');
+        this.setText(e, `h${i}-time`, fmtTime(entry.time));
+        this.setText(e, `h${i}-rate`, entry.rating);
+      } else {
+        this.setText(e, `h${i}-mode`, '-');
+        this.setText(e, `h${i}-diff`, '-');
+        this.setText(e, `h${i}-result`, '-');
+        this.setText(e, `h${i}-time`, '-');
+        this.setText(e, `h${i}-rate`, '-');
+      }
+    }
   }
 
   handleTileClick(r: number, c: number, button: 'left' | 'right' | 'middle') {
@@ -1920,6 +2085,7 @@ export class MinesweeperSystem extends createSystem({
   }
 
   handleWin() {
+    const prevLevel = GM.level;
     modeWins.add(GM.mode);
     try { localStorage.setItem('neon-mines-modewins', JSON.stringify([...modeWins])); } catch {}
     if (modeWins.size >= 6 && !GM.achievements.has('all_modes')) {
@@ -1935,6 +2101,13 @@ export class MinesweeperSystem extends createSystem({
     this.updateGameOver();
     const newAchs = checkAchievements(audio);
     newAchs.forEach(n => this.queueToast(n + ' unlocked!'));
+    // Level-up notification
+    if (GM.level > prevLevel) {
+      this.queueToast(`LEVEL UP! Level ${GM.level} - ${getLevelTitle(GM.level)}`);
+      audio.playLevelUp();
+      // Extra celebration burst for level up
+      spawnParticles(world.scene, 0, 2.0, -1.5, '#ff0', 30, 0.15);
+    }
     // Enhanced win celebration — spiral fireworks
     this.fireworksTimer = 3.0;
     this.fireworksCount = 0;
@@ -2169,6 +2342,12 @@ export class MinesweeperSystem extends createSystem({
         if (xrTile) {
           minefield.setHover(xrTile.r, xrTile.c);
           this.updateTileInfo(xrTile.r, xrTile.c);
+          // XR neighbor highlighting
+          if (GM.revealed[xrTile.r]?.[xrTile.c] && GM.grid[xrTile.r]?.[xrTile.c] > 0) {
+            minefield.highlightNeighbors(xrTile.r, xrTile.c, GM.rows, GM.cols, GM.revealed, GM.flagged, GM.theme);
+          } else {
+            minefield.clearNeighborHighlights();
+          }
           this.xrHoveredR = xrTile.r;
           this.xrHoveredC = xrTile.c;
 
@@ -2187,6 +2366,7 @@ export class MinesweeperSystem extends createSystem({
         } else {
           if (this.xrHoveredR >= 0) {
             minefield.clearHover();
+            minefield.clearNeighborHighlights();
             this.updateTileInfo(-1, -1);
             this.xrHoveredR = -1;
             this.xrHoveredC = -1;
@@ -2207,12 +2387,21 @@ export class MinesweeperSystem extends createSystem({
 
     // Animations
     minefield.updateAnimations(time, delta);
-    animateEnvironment(world.scene, time);
+    // Calculate danger level for timed mode (0-1 scale)
+    let dangerLevel = 0;
+    if (GM.state === 'playing' && GM.mode === 'timed' && GM.timerRunning) {
+      const remaining = GM.timeLimit - GM.elapsedTime;
+      if (remaining <= 30) dangerLevel = Math.min(1, (30 - remaining) / 30);
+    }
+    animateEnvironment(world.scene, time, GM.combo, dangerLevel);
     updateParticles(delta, world.scene);
 
     // Update title level display
     if (GM.state === 'title' && this.entities.title) {
       this.setText(this.entities.title, 'level-text', `Level ${GM.level} - ${getLevelTitle(GM.level)}`);
+      const xpForNext = 100 + GM.level * 50;
+      const xpInLevel = GM.xp % xpForNext;
+      this.setText(this.entities.title, 'xp-progress', `${xpInLevel} / ${xpForNext}`);
     }
   }
 }
@@ -2258,6 +2447,7 @@ async function main() {
     { config: './ui/toast.json', offset: [0, 0.08, -0.5] as [number,number,number], speed: 10 },
     { config: './ui/countdown.json', offset: [0, 0, -0.6] as [number,number,number], speed: 10 },
     { config: './ui/tileinfo.json', offset: [0, -0.06, -0.5] as [number,number,number], speed: 12 },
+    { config: './ui/history.json', offset: [0, 0.1, -2] as [number,number,number], speed: 5 },
   ];
 
   for (const p of panels) {
@@ -2289,8 +2479,15 @@ async function main() {
     if (tile) {
       minefield.setHover(tile.r, tile.c);
       sys.updateTileInfo(tile.r, tile.c);
+      // Neighbor highlighting for revealed numbered tiles
+      if (GM.revealed[tile.r]?.[tile.c] && GM.grid[tile.r]?.[tile.c] > 0) {
+        minefield.highlightNeighbors(tile.r, tile.c, GM.rows, GM.cols, GM.revealed, GM.flagged, GM.theme);
+      } else {
+        minefield.clearNeighborHighlights();
+      }
     } else {
       minefield.clearHover();
+      minefield.clearNeighborHighlights();
       sys.updateTileInfo(-1, -1);
     }
   });

@@ -2,6 +2,10 @@
   <text name="title-text" fontSize="32" fontWeight="bold" color="#0ff">NEON MINES</text>
   <text name="subtitle" fontSize="12" color="#0ff8">HOLOGRAPHIC MINESWEEPER</text>
   <text name="level-text" fontSize="10" color="#fff8">Level 1 - Novice</text>
+  <container flexDirection="row" gap="4" alignItems="center">
+    <text name="xp-text" fontSize="9" color="#0f88">XP:</text>
+    <text name="xp-progress" fontSize="9" fontWeight="bold" color="#0f8">0 / 150</text>
+  </container>
   <container flexDirection="column" gap="6" marginTop="8" width="200">
     <text name="btn-play" fontSize="16" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="6" borderRadius="6" borderColor="#0f06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#0f04">PLAY</text>
     <text name="btn-scores" fontSize="16" fontWeight="bold" color="#ff0" backgroundColor="#ff02" padding="6" borderRadius="6" borderColor="#ff06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#ff04">LEADERBOARD</text>
@@ -9,5 +13,6 @@
     <text name="btn-stats" fontSize="16" fontWeight="bold" color="#0ff" backgroundColor="#0ff2" padding="6" borderRadius="6" borderColor="#0ff6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#0ff4">STATS</text>
     <text name="btn-settings" fontSize="16" fontWeight="bold" color="#aaa" backgroundColor="#aaa2" padding="6" borderRadius="6" borderColor="#aaa6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#aaa4">SETTINGS</text>
     <text name="btn-help" fontSize="16" fontWeight="bold" color="#88f" backgroundColor="#88f2" padding="6" borderRadius="6" borderColor="#88f6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#88f4">HELP</text>
+    <text name="btn-history" fontSize="16" fontWeight="bold" color="#f0f" backgroundColor="#f0f2" padding="6" borderRadius="6" borderColor="#f0f6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#f0f4">HISTORY</text>
   </container>
 </container>
