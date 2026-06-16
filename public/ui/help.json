@@ -49,7 +49,7 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "Right Click: Flag/unflag mine"
+              "Double Click: Chord reveal (numbered tile)"
             ],
             "properties": {
               "fontsize": "10",
@@ -61,7 +61,7 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "Middle Click: Quick reveal neighbors"
+              "Right Click: Flag/unflag mine"
             ],
             "properties": {
               "fontsize": "10",
@@ -73,7 +73,7 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "ESC / P: Pause"
+              "Middle Click: Chord reveal neighbors"
             ],
             "properties": {
               "fontsize": "10",
@@ -85,13 +85,37 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "R: Restart (game over)"
+              "H: Use hint (costs 25 XP)"
             ],
             "properties": {
               "fontsize": "10",
               "color": "#ccc"
             },
             "dataUid": "uid-9"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "ESC / P: Pause"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-10"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "R: Restart (game over)"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-11"
           },
           {
             "sourceTag": "text",
@@ -105,7 +129,7 @@
               "color": "#0ff",
               "margintop": "4"
             },
-            "dataUid": "uid-10"
+            "dataUid": "uid-12"
           },
           {
             "sourceTag": "text",
@@ -117,43 +141,55 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-11"
-          },
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "Right Grip/A: Flag tile"
-            ],
-            "properties": {
-              "fontsize": "10",
-              "color": "#ccc"
-            },
-            "dataUid": "uid-12"
-          },
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "B: Pause"
-            ],
-            "properties": {
-              "fontsize": "10",
-              "color": "#ccc"
-            },
             "dataUid": "uid-13"
           },
           {
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "Laser pointer: Aim at tiles"
+              "Right Grip: Flag/unflag mine"
             ],
             "properties": {
               "fontsize": "10",
               "color": "#ccc"
             },
             "dataUid": "uid-14"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "A Button: Chord reveal"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-15"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "B Button: Pause"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-16"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "Controller ray: Aim at tiles"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-17"
           },
           {
             "sourceTag": "text",
@@ -167,7 +203,7 @@
               "color": "#0ff",
               "margintop": "4"
             },
-            "dataUid": "uid-15"
+            "dataUid": "uid-18"
           },
           {
             "sourceTag": "text",
@@ -179,7 +215,7 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-16"
+            "dataUid": "uid-19"
           },
           {
             "sourceTag": "text",
@@ -191,7 +227,7 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-17"
+            "dataUid": "uid-20"
           },
           {
             "sourceTag": "text",
@@ -203,7 +239,7 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-18"
+            "dataUid": "uid-21"
           },
           {
             "sourceTag": "text",
@@ -215,7 +251,19 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-19"
+            "dataUid": "uid-22"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "Combo: Reveal tiles rapidly for XP bonus"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#ccc"
+            },
+            "dataUid": "uid-23"
           },
           {
             "sourceTag": "text",
@@ -229,7 +277,7 @@
               "color": "#0ff",
               "margintop": "4"
             },
-            "dataUid": "uid-20"
+            "dataUid": "uid-24"
           },
           {
             "sourceTag": "text",
@@ -241,19 +289,19 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-21"
+            "dataUid": "uid-25"
           },
           {
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "Timed: Race against the clock"
+              "Timed: Race against the clock (countdown start)"
             ],
             "properties": {
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-22"
+            "dataUid": "uid-26"
           },
           {
             "sourceTag": "text",
@@ -265,19 +313,19 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-23"
+            "dataUid": "uid-27"
           },
           {
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "Daily: Same puzzle for everyone"
+              "Daily: Same puzzle for everyone (streaks!)"
             ],
             "properties": {
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-24"
+            "dataUid": "uid-28"
           },
           {
             "sourceTag": "text",
@@ -289,7 +337,7 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-25"
+            "dataUid": "uid-29"
           },
           {
             "sourceTag": "text",
@@ -301,7 +349,7 @@
               "fontsize": "10",
               "color": "#ccc"
             },
-            "dataUid": "uid-26"
+            "dataUid": "uid-30"
           }
         ],
         "properties": {
@@ -325,7 +373,7 @@
           "cursor": "pointer",
           "hoverColor": "#fff"
         },
-        "dataUid": "uid-27"
+        "dataUid": "uid-31"
       }
     ],
     "properties": {
@@ -348,7 +396,7 @@
         "column": 0
       },
       "end": {
-        "line": 28,
+        "line": 32,
         "column": 12
       }
     },
@@ -368,7 +416,7 @@
         "column": 2
       },
       "end": {
-        "line": 26,
+        "line": 30,
         "column": 14
       }
     },
@@ -399,7 +447,7 @@
       },
       "end": {
         "line": 5,
-        "column": 73
+        "column": 86
       }
     },
     "uid-7": {
@@ -409,7 +457,7 @@
       },
       "end": {
         "line": 6,
-        "column": 80
+        "column": 73
       }
     },
     "uid-8": {
@@ -419,7 +467,7 @@
       },
       "end": {
         "line": 7,
-        "column": 58
+        "column": 80
       }
     },
     "uid-9": {
@@ -429,7 +477,7 @@
       },
       "end": {
         "line": 8,
-        "column": 66
+        "column": 69
       }
     },
     "uid-10": {
@@ -439,7 +487,7 @@
       },
       "end": {
         "line": 9,
-        "column": 93
+        "column": 58
       }
     },
     "uid-11": {
@@ -449,7 +497,7 @@
       },
       "end": {
         "line": 10,
-        "column": 70
+        "column": 66
       }
     },
     "uid-12": {
@@ -459,7 +507,7 @@
       },
       "end": {
         "line": 11,
-        "column": 67
+        "column": 93
       }
     },
     "uid-13": {
@@ -469,7 +517,7 @@
       },
       "end": {
         "line": 12,
-        "column": 52
+        "column": 70
       }
     },
     "uid-14": {
@@ -479,7 +527,7 @@
       },
       "end": {
         "line": 13,
-        "column": 71
+        "column": 72
       }
     },
     "uid-15": {
@@ -489,7 +537,7 @@
       },
       "end": {
         "line": 14,
-        "column": 87
+        "column": 66
       }
     },
     "uid-16": {
@@ -499,7 +547,7 @@
       },
       "end": {
         "line": 15,
-        "column": 77
+        "column": 59
       }
     },
     "uid-17": {
@@ -509,7 +557,7 @@
       },
       "end": {
         "line": 16,
-        "column": 77
+        "column": 72
       }
     },
     "uid-18": {
@@ -519,7 +567,7 @@
       },
       "end": {
         "line": 17,
-        "column": 91
+        "column": 87
       }
     },
     "uid-19": {
@@ -529,7 +577,7 @@
       },
       "end": {
         "line": 18,
-        "column": 75
+        "column": 77
       }
     },
     "uid-20": {
@@ -539,7 +587,7 @@
       },
       "end": {
         "line": 19,
-        "column": 87
+        "column": 77
       }
     },
     "uid-21": {
@@ -549,7 +597,7 @@
       },
       "end": {
         "line": 20,
-        "column": 73
+        "column": 91
       }
     },
     "uid-22": {
@@ -559,7 +607,7 @@
       },
       "end": {
         "line": 21,
-        "column": 73
+        "column": 75
       }
     },
     "uid-23": {
@@ -569,7 +617,7 @@
       },
       "end": {
         "line": 22,
-        "column": 73
+        "column": 84
       }
     },
     "uid-24": {
@@ -579,7 +627,7 @@
       },
       "end": {
         "line": 23,
-        "column": 75
+        "column": 87
       }
     },
     "uid-25": {
@@ -599,16 +647,56 @@
       },
       "end": {
         "line": 25,
-        "column": 69
+        "column": 91
       }
     },
     "uid-27": {
       "start": {
+        "line": 26,
+        "column": 4
+      },
+      "end": {
+        "line": 26,
+        "column": 73
+      }
+    },
+    "uid-28": {
+      "start": {
         "line": 27,
-        "column": 2
+        "column": 4
       },
       "end": {
         "line": 27,
+        "column": 86
+      }
+    },
+    "uid-29": {
+      "start": {
+        "line": 28,
+        "column": 4
+      },
+      "end": {
+        "line": 28,
+        "column": 73
+      }
+    },
+    "uid-30": {
+      "start": {
+        "line": 29,
+        "column": 4
+      },
+      "end": {
+        "line": 29,
+        "column": 69
+      }
+    },
+    "uid-31": {
+      "start": {
+        "line": 31,
+        "column": 2
+      },
+      "end": {
+        "line": 31,
         "column": 110
       }
     }

@@ -16,9 +16,14 @@
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Mines Flagged</text><text name="stat-flagged" fontSize="11" fontWeight="bold" color="#f0f">0</text></container>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Mines Detonated</text><text name="stat-detonated" fontSize="11" fontWeight="bold" color="#f00">0</text></container>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Combo</text><text name="stat-bestcombo" fontSize="11" fontWeight="bold" color="#f0f">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Chord Reveals</text><text name="stat-chords" fontSize="11" fontWeight="bold" color="#0af">0</text></container>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Hints Used</text><text name="stat-hints" fontSize="11" fontWeight="bold" color="#ff0">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Perfect Games</text><text name="stat-perfect" fontSize="11" fontWeight="bold" color="#0ff">0</text></container>
+    <text fontSize="10" color="#0ff4" marginTop="2">───── STREAKS ─────</text>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Win Streak</text><text name="stat-streak" fontSize="11" fontWeight="bold" color="#0f0">0</text></container>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Streak</text><text name="stat-beststreak" fontSize="11" fontWeight="bold" color="#ff0">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Daily Streak</text><text name="stat-dailystreak" fontSize="11" fontWeight="bold" color="#f80">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Daily Streak</text><text name="stat-bestdaily" fontSize="11" fontWeight="bold" color="#fa0">0</text></container>
     <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Play Time</text><text name="stat-playtime" fontSize="11" fontWeight="bold" color="#aaa">0m</text></container>
   </container>
   <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>

@@ -3,25 +3,29 @@
   <container flexDirection="column" gap="4" width="260">
     <text fontSize="12" fontWeight="bold" color="#0ff">-- BROWSER CONTROLS --</text>
     <text fontSize="10" color="#ccc">Left Click: Reveal tile</text>
+    <text fontSize="10" color="#ccc">Double Click: Chord reveal (numbered tile)</text>
     <text fontSize="10" color="#ccc">Right Click: Flag/unflag mine</text>
-    <text fontSize="10" color="#ccc">Middle Click: Quick reveal neighbors</text>
+    <text fontSize="10" color="#ccc">Middle Click: Chord reveal neighbors</text>
+    <text fontSize="10" color="#ccc">H: Use hint (costs 25 XP)</text>
     <text fontSize="10" color="#ccc">ESC / P: Pause</text>
     <text fontSize="10" color="#ccc">R: Restart (game over)</text>
     <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- VR CONTROLS --</text>
     <text fontSize="10" color="#ccc">Right Trigger: Reveal tile</text>
-    <text fontSize="10" color="#ccc">Right Grip/A: Flag tile</text>
-    <text fontSize="10" color="#ccc">B: Pause</text>
-    <text fontSize="10" color="#ccc">Laser pointer: Aim at tiles</text>
+    <text fontSize="10" color="#ccc">Right Grip: Flag/unflag mine</text>
+    <text fontSize="10" color="#ccc">A Button: Chord reveal</text>
+    <text fontSize="10" color="#ccc">B Button: Pause</text>
+    <text fontSize="10" color="#ccc">Controller ray: Aim at tiles</text>
     <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- RULES --</text>
     <text fontSize="10" color="#ccc">Numbers show adjacent mines (1-8)</text>
     <text fontSize="10" color="#ccc">Empty tiles auto-reveal neighbors</text>
     <text fontSize="10" color="#ccc">Flag all mines to win, or reveal all safe tiles</text>
     <text fontSize="10" color="#ccc">Hit a mine and it is game over!</text>
+    <text fontSize="10" color="#ccc">Combo: Reveal tiles rapidly for XP bonus</text>
     <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- MODES --</text>
     <text fontSize="10" color="#ccc">Classic: Standard minesweeper</text>
-    <text fontSize="10" color="#ccc">Timed: Race against the clock</text>
+    <text fontSize="10" color="#ccc">Timed: Race against the clock (countdown start)</text>
     <text fontSize="10" color="#ccc">No-Flag: Win without flagging</text>
-    <text fontSize="10" color="#ccc">Daily: Same puzzle for everyone</text>
+    <text fontSize="10" color="#ccc">Daily: Same puzzle for everyone (streaks!)</text>
     <text fontSize="10" color="#ccc">Zen: No timer, infinite lives</text>
     <text fontSize="10" color="#ccc">Practice: Learn the ropes</text>
   </container>

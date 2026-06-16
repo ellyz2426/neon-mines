@@ -32,6 +32,7 @@ import {
   Vector2,
   Vector3,
   Group,
+  Matrix4,
 } from '@iwsdk/core';
 
 // Keyboard shim (runtime has keyboard; types expose only XRInputManager)
@@ -119,6 +120,8 @@ class GameStateManager {
     winStreak: 0, bestStreak: 0, playTime: 0,
     easyWins: 0, mediumWins: 0, hardWins: 0,
     bestCombo: 0, totalHintsUsed: 0,
+    dailyStreak: 0, bestDailyStreak: 0, lastDailyDate: '',
+    perfectGames: 0, totalChords: 0,
   };
   achievements: Set<string> = new Set();
   leaderboard: LeaderEntry[] = [];
@@ -237,6 +240,7 @@ class GameStateManager {
       if (nr >= 0 && nr < this.rows && nc >= 0 && nc < this.cols && this.flagged[nr][nc]) adjFlags++;
     }
     if (adjFlags !== this.grid[r][c]) return 'already';
+    this.stats.totalChords++;
     let result: 'safe' | 'mine' | 'already' = 'already';
     for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
       if (dr === 0 && dc === 0) continue;
@@ -294,6 +298,24 @@ class GameStateManager {
       if (this.difficulty === 'easy') this.stats.easyWins++;
       if (this.difficulty === 'medium') this.stats.mediumWins++;
       if (this.difficulty === 'hard') this.stats.hardWins++;
+      // Perfect game (no wrong flags, no hints)
+      if (this.getEfficiency() === 100 && this.hintsUsedThisGame === 0) {
+        this.stats.perfectGames++;
+      }
+      // Daily streak tracking
+      if (this.mode === 'daily') {
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        if (this.stats.lastDailyDate === yesterday || this.stats.lastDailyDate === '') {
+          this.stats.dailyStreak++;
+        } else if (this.stats.lastDailyDate !== today) {
+          this.stats.dailyStreak = 1;
+        }
+        if (this.stats.dailyStreak > this.stats.bestDailyStreak) {
+          this.stats.bestDailyStreak = this.stats.dailyStreak;
+        }
+        this.stats.lastDailyDate = today;
+      }
       const t = this.elapsedTime;
       if (this.difficulty === 'easy' && t < this.stats.bestEasy) this.stats.bestEasy = t;
       if (this.difficulty === 'medium' && t < this.stats.bestMedium) this.stats.bestMedium = t;
@@ -471,6 +493,30 @@ const ACHIEVEMENTS: Achievement[] = [
   { id:'level30', name:'High Roller', desc:'Reach level 30', check:()=>GM.level>=30 },
   { id:'level40', name:'Elite', desc:'Reach level 40', check:()=>GM.level>=40 },
   { id:'level50', name:'Grandmaster', desc:'Reach level 50', check:()=>GM.level>=50 },
+  // ---- Daily Streaks ----
+  { id:'daily3', name:'Three Day Sweep', desc:'3-day Daily streak', check:()=>GM.stats.bestDailyStreak>=3 },
+  { id:'daily7', name:'Weekly Ritual', desc:'7-day Daily streak', check:()=>GM.stats.bestDailyStreak>=7 },
+  { id:'daily14', name:'Fortnight Force', desc:'14-day Daily streak', check:()=>GM.stats.bestDailyStreak>=14 },
+  { id:'daily30', name:'Monthly Devotion', desc:'30-day Daily streak', check:()=>GM.stats.bestDailyStreak>=30 },
+  // ---- Perfect Games ----
+  { id:'perfect1', name:'Flawless', desc:'Win with 100% flag accuracy, no hints', check:()=>GM.stats.perfectGames>=1 },
+  { id:'perfect5', name:'Perfectionist', desc:'5 perfect games', check:()=>GM.stats.perfectGames>=5 },
+  { id:'perfect10', name:'Machine Precision', desc:'10 perfect games', check:()=>GM.stats.perfectGames>=10 },
+  // ---- Chord Mastery ----
+  { id:'chord10', name:'Chord Novice', desc:'Use 10 chord reveals', check:()=>GM.stats.totalChords>=10 },
+  { id:'chord50', name:'Chord Expert', desc:'Use 50 chord reveals', check:()=>GM.stats.totalChords>=50 },
+  { id:'chord100', name:'Chord Master', desc:'Use 100 chord reveals', check:()=>GM.stats.totalChords>=100 },
+  // ---- Speed Challenges ----
+  { id:'easy_sub10', name:'Instant Scan', desc:'Clear Easy under 10s', check:()=>GM.stats.bestEasy<10 },
+  { id:'med_sub60', name:'Minute Mind', desc:'Clear Medium under 1 min', check:()=>GM.stats.bestMedium<60 },
+  { id:'hard_sub120', name:'Steel Nerves', desc:'Clear Hard under 2 min', check:()=>GM.stats.bestHard<120 },
+  // ---- Milestones ----
+  { id:'tiles50k', name:'Deep Miner', desc:'Reveal 50,000 tiles', check:()=>GM.stats.tilesRevealed>=50000 },
+  { id:'flags2k', name:'Flag Factory', desc:'Place 2000 flags', check:()=>GM.stats.minesFlagged>=2000 },
+  { id:'combo30', name:'Supernova', desc:'Reach a 30 combo', check:()=>GM.maxCombo>=30 },
+  { id:'combo50', name:'Cosmic Chain', desc:'Reach a 50 combo', check:()=>GM.maxCombo>=50 },
+  // ---- Theme Explorer ----
+  { id:'theme_all', name:'Palette Master', desc:'Play a game in each theme', check:()=>false }, // checked separately
 ];
 
 function checkAchievements(audio: AudioManager): string[] {
@@ -1050,6 +1096,7 @@ export class MinesweeperSystem extends createSystem({
   helpPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/help.json')] },
   toastPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/toast.json')] },
   countdownPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/countdown.json')] },
+  tileinfoPanel: { required: [PanelUI, PanelDocument], where: [eq(PanelUI, 'config', './ui/tileinfo.json')] },
 }) {
   entities: Record<string, Entity> = {};
   toastTimer = 0;
@@ -1067,9 +1114,105 @@ export class MinesweeperSystem extends createSystem({
   lastWarningTick = -1;
   // Toast queue
   toastQueue: string[] = [];
+  // Screen shake
+  shakeIntensity = 0;
+  shakeDecay = 3;
+  originalCameraPos: Vector3 | null = null;
+  // Double-click tracking
+  lastClickTime = 0;
+  lastClickR = -1;
+  lastClickC = -1;
+  doubleClickThreshold = 0.35; // seconds
+  // XR hover state
+  xrHoveredR = -1;
+  xrHoveredC = -1;
+  // Theme tracking for achievement
+  themesPlayed: Set<number> = new Set();
+  // Countdown state
+  countdownActive = false;
+  pendingCountdownMode: GameMode = 'classic';
+  pendingCountdownDiff: Difficulty = 'easy';
 
-  private _kb(): KeyboardLike {
-    return (this.input as unknown as { keyboard: KeyboardLike }).keyboard;
+  private _kb(): KeyboardLike | null {
+    const inp = this.input as unknown as { keyboard?: KeyboardLike };
+    return inp?.keyboard ?? null;
+  }
+
+  private pickTileXR(): { r: number; c: number } | null {
+    const xr = world.renderer.xr;
+    if (!xr?.isPresenting) return null;
+    try {
+      const controller = xr.getController(0); // right hand
+      if (!controller) return null;
+      const tempMatrix = new Matrix4();
+      tempMatrix.identity().extractRotation(controller.matrixWorld);
+      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+      let bestDist = Infinity;
+      let bestTile: { r: number; c: number } | null = null;
+      for (let r = 0; r < minefield.tiles.length; r++) {
+        for (let c = 0; c < (minefield.tiles[r]?.length ?? 0); c++) {
+          const tile = minefield.tiles[r][c];
+          const target = tile.coverMesh.visible ? tile.coverMesh : tile.base;
+          const intersects = raycaster.intersectObject(target, false);
+          if (intersects.length > 0 && intersects[0].distance < bestDist) {
+            bestDist = intersects[0].distance;
+            bestTile = { r, c };
+          }
+        }
+      }
+      return bestTile;
+    } catch { return null; }
+  }
+
+  private triggerScreenShake(intensity: number) {
+    this.shakeIntensity = intensity;
+    if (!this.originalCameraPos) {
+      this.originalCameraPos = world.camera.position.clone();
+    }
+  }
+
+  private updateScreenShake(delta: number) {
+    if (this.shakeIntensity <= 0.001) {
+      if (this.originalCameraPos) {
+        world.camera.position.copy(this.originalCameraPos);
+        this.originalCameraPos = null;
+      }
+      this.shakeIntensity = 0;
+      return;
+    }
+    this.shakeIntensity *= Math.max(0, 1 - this.shakeDecay * delta);
+    const ox = (Math.random() - 0.5) * 2 * this.shakeIntensity;
+    const oy = (Math.random() - 0.5) * 2 * this.shakeIntensity;
+    if (this.originalCameraPos) {
+      world.camera.position.set(
+        this.originalCameraPos.x + ox,
+        this.originalCameraPos.y + oy,
+        this.originalCameraPos.z
+      );
+    }
+  }
+
+  updateTileInfo(r: number, c: number) {
+    const e = this.entities.tileinfo;
+    if (!e) return;
+    if (r < 0 || c < 0) {
+      if (e.object3D) e.object3D.visible = false;
+      return;
+    }
+    if (e.object3D) e.object3D.visible = true;
+    const revealed = GM.revealed[r]?.[c];
+    const flagged = GM.flagged[r]?.[c];
+    this.setText(e, 'hover-text', `Tile (${r+1}, ${c+1})`);
+    if (revealed) {
+      const val = GM.grid[r]?.[c] ?? 0;
+      this.setText(e, 'hover-info', val > 0 ? `${val} adjacent mines` : 'Clear');
+    } else if (flagged) {
+      this.setText(e, 'hover-info', 'Flagged');
+    } else {
+      this.setText(e, 'hover-info', 'Click to reveal');
+    }
   }
 
   private getDoc(e: Entity): UIKitDocument | undefined {
@@ -1097,7 +1240,7 @@ export class MinesweeperSystem extends createSystem({
     });
 
     this.queries.modePanel.subscribe('qualify', (e) => {
-      this.entities.mode = e;
+      this.entities.mode = e; if (e.object3D) e.object3D.visible = false;
       const modes: GameMode[] = ['classic','timed','noflag','daily','zen','practice'];
       modes.forEach(m => {
         this.btn(e, `btn-${m}`, () => { this.pendingMode = m; GM.state = 'difficulty'; audio.playClick(); this.updateVisibility(); });
@@ -1106,7 +1249,7 @@ export class MinesweeperSystem extends createSystem({
     });
 
     this.queries.diffPanel.subscribe('qualify', (e) => {
-      this.entities.diff = e;
+      this.entities.diff = e; if (e.object3D) e.object3D.visible = false;
       (['easy','medium','hard'] as Difficulty[]).forEach(d => {
         this.btn(e, `btn-${d}`, () => { this.startNewGame(this.pendingMode, d); audio.playClick(); });
       });
@@ -1114,47 +1257,47 @@ export class MinesweeperSystem extends createSystem({
     });
 
     this.queries.hudPanel.subscribe('qualify', (e) => {
-      this.entities.hud = e;
+      this.entities.hud = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-hint', () => { this.useHint(); });
     });
 
     this.queries.pausePanel.subscribe('qualify', (e) => {
-      this.entities.pause = e;
+      this.entities.pause = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-resume', () => { GM.state = 'playing'; GM.timerRunning = true; audio.playClick(); this.updateVisibility(); });
       this.btn(e, 'btn-quit', () => { GM.state = 'title'; GM.timerRunning = false; audio.playClick(); this.clearBoard(); this.updateVisibility(); });
     });
 
     this.queries.gameoverPanel.subscribe('qualify', (e) => {
-      this.entities.gameover = e;
+      this.entities.gameover = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-rematch', () => { this.startNewGame(GM.mode, GM.difficulty); audio.playClick(); });
       this.btn(e, 'btn-menu', () => { GM.state = 'title'; audio.playClick(); this.clearBoard(); this.updateVisibility(); });
     });
 
     this.queries.explosionPanel.subscribe('qualify', (e) => {
-      this.entities.explosion = e;
+      this.entities.explosion = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-retry', () => { this.startNewGame(GM.mode, GM.difficulty); audio.playClick(); });
       this.btn(e, 'btn-menu2', () => { GM.state = 'title'; audio.playClick(); this.clearBoard(); this.updateVisibility(); });
     });
 
     this.queries.lbPanel.subscribe('qualify', (e) => {
-      this.entities.lb = e;
+      this.entities.lb = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); this.updateVisibility(); });
     });
 
     this.queries.achPanel.subscribe('qualify', (e) => {
-      this.entities.ach = e;
+      this.entities.ach = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); this.updateVisibility(); });
       this.btn(e, 'btn-prev', () => { if (GM.achPage > 0) GM.achPage--; this.updateAchievements(); audio.playClick(); });
       this.btn(e, 'btn-next', () => { const maxP = Math.ceil(ACHIEVEMENTS.length / 15) - 1; if (GM.achPage < maxP) GM.achPage++; this.updateAchievements(); audio.playClick(); });
     });
 
     this.queries.statsPanel.subscribe('qualify', (e) => {
-      this.entities.stats = e;
+      this.entities.stats = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); this.updateVisibility(); });
     });
 
     this.queries.settingsPanel.subscribe('qualify', (e) => {
-      this.entities.settings = e;
+      this.entities.settings = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); GM.save(); this.updateVisibility(); });
       this.btn(e, 'btn-master-up', () => { GM.masterVol = Math.min(100, GM.masterVol + 10); this.updateSettings(); audio.updateDroneVolume(); });
       this.btn(e, 'btn-master-down', () => { GM.masterVol = Math.max(0, GM.masterVol - 10); this.updateSettings(); audio.updateDroneVolume(); });
@@ -1166,19 +1309,28 @@ export class MinesweeperSystem extends createSystem({
       this.btn(e, 'btn-theme-next', () => { GM.themeIndex = (GM.themeIndex + 1) % THEMES.length; this.updateSettings(); });
       this.btn(e, 'btn-reset', () => {
         localStorage.clear();
-        Object.assign(GM.stats, { games:0,wins:0,bestEasy:Infinity,bestMedium:Infinity,bestHard:Infinity,tilesRevealed:0,minesFlagged:0,minesDetonated:0,winStreak:0,bestStreak:0,playTime:0,easyWins:0,mediumWins:0,hardWins:0,bestCombo:0,totalHintsUsed:0 });
+        Object.assign(GM.stats, { games:0,wins:0,bestEasy:Infinity,bestMedium:Infinity,bestHard:Infinity,tilesRevealed:0,minesFlagged:0,minesDetonated:0,winStreak:0,bestStreak:0,playTime:0,easyWins:0,mediumWins:0,hardWins:0,bestCombo:0,totalHintsUsed:0,dailyStreak:0,bestDailyStreak:0,lastDailyDate:'',perfectGames:0,totalChords:0 });
         GM.achievements.clear(); GM.leaderboard = []; GM.xp = 0; GM.level = 1; modeWins.clear();
+        this.themesPlayed.clear();
         this.updateSettings();
       });
     });
 
     this.queries.helpPanel.subscribe('qualify', (e) => {
-      this.entities.help = e;
+      this.entities.help = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-back', () => { GM.state = 'title'; audio.playClick(); this.updateVisibility(); });
     });
 
-    this.queries.toastPanel.subscribe('qualify', (e) => { this.entities.toast = e; });
-    this.queries.countdownPanel.subscribe('qualify', (e) => { this.entities.countdown = e; });
+    this.queries.toastPanel.subscribe('qualify', (e) => { this.entities.toast = e; if (e.object3D) e.object3D.visible = false; });
+    this.queries.countdownPanel.subscribe('qualify', (e) => { this.entities.countdown = e; if (e.object3D) e.object3D.visible = false; });
+    this.queries.tileinfoPanel.subscribe('qualify', (e) => { this.entities.tileinfo = e; if (e.object3D) e.object3D.visible = false; });
+
+    // Tile info panel — no wiring needed, updated on hover
+    // Load themes played from localStorage
+    try {
+      const tp = localStorage.getItem('neon-mines-themes');
+      if (tp) this.themesPlayed = new Set(JSON.parse(tp));
+    } catch {}
 
     document.addEventListener('contextmenu', e => e.preventDefault());
     audio.startDrone();
@@ -1224,11 +1376,35 @@ export class MinesweeperSystem extends createSystem({
     this.clearBoard();
     this.mineExplosionQueue = [];
     this.lastWarningTick = -1;
-    GM.startGame(mode, diff);
-    minefield.build(GM.rows, GM.cols, GM.theme);
-    minefield.group.position.set(0, 1.4, -1.5);
-    world.scene.add(minefield.group);
-    this.updateVisibility();
+    // Track theme usage for achievement
+    this.themesPlayed.add(GM.themeIndex);
+    try { localStorage.setItem('neon-mines-themes', JSON.stringify([...this.themesPlayed])); } catch {}
+    if (this.themesPlayed.size >= THEMES.length && !GM.achievements.has('theme_all')) {
+      GM.achievements.add('theme_all'); GM.save();
+      this.queueToast('Palette Master unlocked!');
+      audio.playAchievement();
+    }
+    // Use countdown for timed mode
+    if (mode === 'timed') {
+      this.countdownActive = true;
+      this.countdownTimer = 3.99;
+      this.countdownValue = 3;
+      this.pendingCountdownMode = mode;
+      this.pendingCountdownDiff = diff;
+      GM.startGame(mode, diff);
+      GM.timerRunning = false; // Don't start timer until countdown finishes
+      minefield.build(GM.rows, GM.cols, GM.theme);
+      minefield.group.position.set(0, 1.4, -1.5);
+      world.scene.add(minefield.group);
+      this.updateVisibility();
+      audio.playCountdown();
+    } else {
+      GM.startGame(mode, diff);
+      minefield.build(GM.rows, GM.cols, GM.theme);
+      minefield.group.position.set(0, 1.4, -1.5);
+      world.scene.add(minefield.group);
+      this.updateVisibility();
+    }
   }
 
   clearBoard() {
@@ -1361,6 +1537,10 @@ export class MinesweeperSystem extends createSystem({
     this.setText(e, 'stat-streak', `${GM.stats.winStreak}`);
     this.setText(e, 'stat-beststreak', `${GM.stats.bestStreak}`);
     this.setText(e, 'stat-playtime', `${Math.floor(GM.stats.playTime / 60)}m`);
+    this.setText(e, 'stat-perfect', `${GM.stats.perfectGames}`);
+    this.setText(e, 'stat-dailystreak', `${GM.stats.dailyStreak}`);
+    this.setText(e, 'stat-bestdaily', `${GM.stats.bestDailyStreak}`);
+    this.setText(e, 'stat-chords', `${GM.stats.totalChords}`);
   }
 
   updateSettings() {
@@ -1374,6 +1554,8 @@ export class MinesweeperSystem extends createSystem({
 
   handleTileClick(r: number, c: number, button: 'left' | 'right' | 'middle') {
     if (GM.state !== 'playing') return;
+    // Block input during countdown
+    if (this.countdownActive) return;
 
     if (button === 'right') {
       if (GM.toggleFlag(r, c)) {
@@ -1406,6 +1588,32 @@ export class MinesweeperSystem extends createSystem({
     }
 
     // Left click
+    // Double-click detection for chord reveal
+    const now = performance.now() / 1000;
+    if (this.lastClickR === r && this.lastClickC === c && (now - this.lastClickTime) < this.doubleClickThreshold) {
+      // Double-click on same tile → try chord reveal
+      if (GM.revealed[r]?.[c] && GM.grid[r]?.[c] > 0) {
+        const prevRevealed = GM.tilesRevealed;
+        const result = GM.chordReveal(r, c);
+        if (result === 'mine') {
+          this.handleMineHit(r, c);
+          return;
+        }
+        if (result === 'safe') {
+          const newRevealed = GM.tilesRevealed - prevRevealed;
+          this.updateCombo(newRevealed);
+          this.syncRevealedTiles();
+          audio.playChord();
+          if (GM.checkWin()) this.handleWin();
+        }
+        this.lastClickTime = 0; // Reset
+        return;
+      }
+    }
+    this.lastClickTime = now;
+    this.lastClickR = r;
+    this.lastClickC = c;
+
     const prevRevealed = GM.tilesRevealed;
     const result = GM.reveal(r, c);
     if (result === 'mine') {
@@ -1526,6 +1734,7 @@ export class MinesweeperSystem extends createSystem({
     const pos = minefield.getTileWorldPos(firstMine.r, firstMine.c);
     spawnParticles(world.scene, pos.x, pos.y, pos.z, GM.theme.mine, 15, 0.1);
     audio.playExplosion();
+    this.triggerScreenShake(0.08);
 
     GM.endGame(false);
     // Delay showing explosion panel until chain finishes
@@ -1565,6 +1774,33 @@ export class MinesweeperSystem extends createSystem({
   }
 
   update(delta: number, time: number) {
+    // Countdown timer (for timed mode)
+    if (this.countdownActive && this.countdownTimer > 0) {
+      this.countdownTimer -= delta;
+      const newVal = Math.ceil(this.countdownTimer);
+      if (newVal !== this.countdownValue && newVal > 0) {
+        this.countdownValue = newVal;
+        if (this.entities.countdown) {
+          this.setText(this.entities.countdown, 'countdown-text', `${newVal}`);
+        }
+        audio.playCountdown();
+      }
+      if (this.countdownTimer <= 0) {
+        this.countdownActive = false;
+        this.countdownTimer = 0;
+        if (this.entities.countdown?.object3D) this.entities.countdown.object3D.visible = false;
+        audio.playGo();
+        // Now start the actual timer
+        GM.timerRunning = true;
+      }
+      if (this.entities.countdown?.object3D) this.entities.countdown.object3D.visible = this.countdownActive;
+      // Still update visuals during countdown
+      minefield.updateAnimations(time, delta);
+      animateEnvironment(world.scene, time);
+      updateParticles(delta, world.scene);
+      return; // Skip game logic during countdown
+    }
+
     // Timer
     if (GM.timerRunning) {
       GM.elapsedTime += delta;
@@ -1649,27 +1885,64 @@ export class MinesweeperSystem extends createSystem({
 
     // Keyboard input
     const kb = this._kb();
-    if (kb.getKeyDown('Escape') || kb.getKeyDown('KeyP')) {
+    if (kb?.getKeyDown('Escape') || kb?.getKeyDown('KeyP')) {
       if (GM.state === 'playing') {
         GM.state = 'paused'; GM.timerRunning = false; this.updateVisibility();
       } else if (GM.state === 'paused') {
         GM.state = 'playing'; GM.timerRunning = true; this.updateVisibility();
       }
     }
-    if (kb.getKeyDown('KeyR') && (GM.state === 'won' || GM.state === 'lost')) {
+    if (kb?.getKeyDown('KeyR') && (GM.state === 'won' || GM.state === 'lost')) {
       this.startNewGame(GM.mode, GM.difficulty);
     }
-    if (kb.getKeyDown('KeyH') && GM.state === 'playing') {
+    if (kb?.getKeyDown('KeyH') && GM.state === 'playing') {
       this.useHint();
     }
 
     // XR controller input
     const rightGP = this.input.gamepads.right;
     if (rightGP) {
+      // XR controller tile interaction (raycasting)
+      if (GM.state === 'playing') {
+        const xrTile = this.pickTileXR();
+        if (xrTile) {
+          minefield.setHover(xrTile.r, xrTile.c);
+          this.updateTileInfo(xrTile.r, xrTile.c);
+          this.xrHoveredR = xrTile.r;
+          this.xrHoveredC = xrTile.c;
+
+          // Trigger → reveal tile
+          if (rightGP.getButtonDown(InputComponent.Trigger)) {
+            this.handleTileClick(xrTile.r, xrTile.c, 'left');
+          }
+          // Grip → flag tile
+          if (rightGP.getButtonDown(InputComponent.Squeeze)) {
+            this.handleTileClick(xrTile.r, xrTile.c, 'right');
+          }
+          // A button → chord reveal
+          if (rightGP.getButtonDown(InputComponent.A_Button)) {
+            this.handleTileClick(xrTile.r, xrTile.c, 'middle');
+          }
+        } else {
+          if (this.xrHoveredR >= 0) {
+            minefield.clearHover();
+            this.updateTileInfo(-1, -1);
+            this.xrHoveredR = -1;
+            this.xrHoveredC = -1;
+          }
+        }
+      }
+
+      // B button → pause (works in all states)
       if (rightGP.getButtonDown(InputComponent.B_Button)) {
-        if (GM.state === 'playing') { GM.state = 'paused'; GM.timerRunning = false; this.updateVisibility(); }
+        if (GM.state === 'playing') {
+          GM.state = 'paused'; GM.timerRunning = false; this.updateVisibility();
+        }
       }
     }
+
+    // Screen shake
+    this.updateScreenShake(delta);
 
     // Animations
     minefield.updateAnimations(time, delta);
@@ -1723,6 +1996,7 @@ async function main() {
     { config: './ui/help.json', offset: [0, 0.1, -2] as [number,number,number], speed: 5 },
     { config: './ui/toast.json', offset: [0, 0.08, -0.5] as [number,number,number], speed: 10 },
     { config: './ui/countdown.json', offset: [0, 0, -0.6] as [number,number,number], speed: 10 },
+    { config: './ui/tileinfo.json', offset: [0, -0.06, -0.5] as [number,number,number], speed: 12 },
   ];
 
   for (const p of panels) {
@@ -1751,8 +2025,13 @@ async function main() {
     const sys = world.getSystem(MinesweeperSystem);
     if (!sys) return;
     const tile = sys.pickTile(ev.clientX, ev.clientY);
-    if (tile) minefield.setHover(tile.r, tile.c);
-    else minefield.clearHover();
+    if (tile) {
+      minefield.setHover(tile.r, tile.c);
+      sys.updateTileInfo(tile.r, tile.c);
+    } else {
+      minefield.clearHover();
+      sys.updateTileInfo(-1, -1);
+    }
   });
 }
 

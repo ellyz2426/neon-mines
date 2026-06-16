@@ -1,0 +1,57 @@
+
+> neon-mines@1.0.0 dev:runtime
+> vite
+
+🚀 Generating initial UIKitML files for dev server...
+👁️  UIKitML file watcher started - monitoring for changes...
+8:06:48 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+
+  VITE v7.3.5  ready in 1896 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://198.19.0.2:5173/
+[browser:pageerror] TypeError: Cannot read properties of undefined (reading 'getKeyDown')
+    at MinesweeperSystem.update (http://localhost:5173/src/index.ts:1901:12)
+    at World.update (http://localhost:5173/node_modules/.vite/deps/elics.js?v=e446161d:921:16)
+    at World.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/ecs/world.js:169:15)
+    at world.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/mcp/ecs-debug-tools.js:44:9)
+    at render (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/init/world-initializer.js:436:15)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:43038:37)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:31415:5)
+[browser:pageerror] TypeError: Cannot read properties of undefined (reading 'getKeyDown')
+    at MinesweeperSystem.update (http://localhost:5173/src/index.ts:1901:12)
+    at World.update (http://localhost:5173/node_modules/.vite/deps/elics.js?v=e446161d:921:16)
+    at World.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/ecs/world.js:169:15)
+    at world.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/mcp/ecs-debug-tools.js:44:9)
+    at render (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/init/world-initializer.js:436:15)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:43038:37)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:31415:5)
+8:09:02 PM [vite] (client) page reload src/index.ts
+[browser:pageerror] TypeError: Cannot read properties of null (reading 'getKeyDown')
+    at MinesweeperSystem.update (http://localhost:5173/src/index.ts?t=1781640542072:1902:12)
+    at World.update (http://localhost:5173/node_modules/.vite/deps/elics.js?v=e446161d:921:16)
+    at World.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/ecs/world.js:169:15)
+    at world.update (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/mcp/ecs-debug-tools.js:44:9)
+    at render (http://localhost:5173/@fs/home/hatch/workspace/immersive-web-sdk/packages/core/dist/init/world-initializer.js:436:15)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:43038:37)
+    at onAnimationFrame (http://localhost:5173/node_modules/.vite/deps/chunk-YB3PU4B7.js?v=52c5c32d:31415:5)
+8:09:11 PM [vite] (client) page reload src/index.ts
+8:10:26 PM [vite] (client) page reload src/index.ts
+8:10:36 PM [vite] (client) page reload src/index.ts
+8:10:49 PM [vite] (client) page reload src/index.ts
+
+🥽 IWSDK Dev Summary (Development):
+  - Device: metaQuest3
+  - Runtime injected: 1116.7KB
+  - Activation mode: localhost
+  - AI: agent mode (WebSocket at /__iwer_mcp)
+  - Note: Runtime only activates on localhost/local networks
+
+
+🥽 IWSDK Dev Summary (Development):
+  - Device: metaQuest3
+  - Runtime injected: 1116.7KB
+  - Activation mode: localhost
+  - AI: agent mode (WebSocket at /__iwer_mcp)
+  - Note: Runtime only activates on localhost/local networks
+

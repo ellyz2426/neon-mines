@@ -535,7 +535,7 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Hints Used"
+                  "Chord Reveals"
                 ],
                 "properties": {
                   "fontsize": "11",
@@ -550,10 +550,10 @@
                   "0"
                 ],
                 "properties": {
-                  "name": "stat-hints",
+                  "name": "stat-chords",
                   "fontsize": "11",
                   "fontweight": "bold",
-                  "color": "#ff0"
+                  "color": "#0af"
                 },
                 "dataUid": "uid-47"
               }
@@ -572,7 +572,7 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Win Streak"
+                  "Hints Used"
                 ],
                 "properties": {
                   "fontsize": "11",
@@ -587,10 +587,10 @@
                   "0"
                 ],
                 "properties": {
-                  "name": "stat-streak",
+                  "name": "stat-hints",
                   "fontsize": "11",
                   "fontweight": "bold",
-                  "color": "#0f0"
+                  "color": "#ff0"
                 },
                 "dataUid": "uid-50"
               }
@@ -609,7 +609,7 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Best Streak"
+                  "Perfect Games"
                 ],
                 "properties": {
                   "fontsize": "11",
@@ -624,10 +624,10 @@
                   "0"
                 ],
                 "properties": {
-                  "name": "stat-beststreak",
+                  "name": "stat-perfect",
                   "fontsize": "11",
                   "fontweight": "bold",
-                  "color": "#ff0"
+                  "color": "#0ff"
                 },
                 "dataUid": "uid-53"
               }
@@ -637,6 +637,167 @@
               "justifycontent": "space-between"
             },
             "dataUid": "uid-51"
+          },
+          {
+            "sourceTag": "text",
+            "type": "custom",
+            "children": [
+              "───── STREAKS ─────"
+            ],
+            "properties": {
+              "fontsize": "10",
+              "color": "#0ff4",
+              "margintop": "2"
+            },
+            "dataUid": "uid-54"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Win Streak"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-56"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-streak",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#0f0"
+                },
+                "dataUid": "uid-57"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-55"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Best Streak"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-59"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-beststreak",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#ff0"
+                },
+                "dataUid": "uid-60"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-58"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Daily Streak"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-62"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-dailystreak",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#f80"
+                },
+                "dataUid": "uid-63"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-61"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Best Daily Streak"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-65"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-bestdaily",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#fa0"
+                },
+                "dataUid": "uid-66"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-64"
           },
           {
             "sourceTag": "container",
@@ -652,7 +813,7 @@
                   "fontsize": "11",
                   "color": "#888"
                 },
-                "dataUid": "uid-55"
+                "dataUid": "uid-68"
               },
               {
                 "sourceTag": "text",
@@ -666,14 +827,14 @@
                   "fontweight": "bold",
                   "color": "#aaa"
                 },
-                "dataUid": "uid-56"
+                "dataUid": "uid-69"
               }
             ],
             "properties": {
               "flexdirection": "row",
               "justifycontent": "space-between"
             },
-            "dataUid": "uid-54"
+            "dataUid": "uid-67"
           }
         ],
         "properties": {
@@ -697,7 +858,7 @@
           "cursor": "pointer",
           "hoverColor": "#fff"
         },
-        "dataUid": "uid-57"
+        "dataUid": "uid-70"
       }
     ],
     "properties": {
@@ -720,7 +881,7 @@
         "column": 0
       },
       "end": {
-        "line": 24,
+        "line": 29,
         "column": 12
       }
     },
@@ -740,7 +901,7 @@
         "column": 2
       },
       "end": {
-        "line": 22,
+        "line": 27,
         "column": 14
       }
     },
@@ -1161,7 +1322,7 @@
       },
       "end": {
         "line": 18,
-        "column": 205
+        "column": 209
       }
     },
     "uid-46": {
@@ -1171,17 +1332,17 @@
       },
       "end": {
         "line": 18,
-        "column": 116
+        "column": 119
       }
     },
     "uid-47": {
       "start": {
         "line": 18,
-        "column": 116
+        "column": 119
       },
       "end": {
         "line": 18,
-        "column": 193
+        "column": 197
       }
     },
     "uid-48": {
@@ -1191,7 +1352,7 @@
       },
       "end": {
         "line": 19,
-        "column": 206
+        "column": 205
       }
     },
     "uid-49": {
@@ -1211,7 +1372,7 @@
       },
       "end": {
         "line": 19,
-        "column": 194
+        "column": 193
       }
     },
     "uid-51": {
@@ -1221,7 +1382,7 @@
       },
       "end": {
         "line": 20,
-        "column": 211
+        "column": 210
       }
     },
     "uid-52": {
@@ -1231,17 +1392,17 @@
       },
       "end": {
         "line": 20,
-        "column": 117
+        "column": 119
       }
     },
     "uid-53": {
       "start": {
         "line": 20,
-        "column": 117
+        "column": 119
       },
       "end": {
         "line": 20,
-        "column": 199
+        "column": 198
       }
     },
     "uid-54": {
@@ -1251,36 +1412,166 @@
       },
       "end": {
         "line": 21,
-        "column": 208
+        "column": 78
       }
     },
     "uid-55": {
       "start": {
-        "line": 21,
-        "column": 66
+        "line": 22,
+        "column": 4
       },
       "end": {
-        "line": 21,
-        "column": 115
+        "line": 22,
+        "column": 206
       }
     },
     "uid-56": {
       "start": {
-        "line": 21,
-        "column": 115
+        "line": 22,
+        "column": 66
       },
       "end": {
-        "line": 21,
-        "column": 196
+        "line": 22,
+        "column": 116
       }
     },
     "uid-57": {
       "start": {
+        "line": 22,
+        "column": 116
+      },
+      "end": {
+        "line": 22,
+        "column": 194
+      }
+    },
+    "uid-58": {
+      "start": {
         "line": 23,
-        "column": 2
+        "column": 4
       },
       "end": {
         "line": 23,
+        "column": 211
+      }
+    },
+    "uid-59": {
+      "start": {
+        "line": 23,
+        "column": 66
+      },
+      "end": {
+        "line": 23,
+        "column": 117
+      }
+    },
+    "uid-60": {
+      "start": {
+        "line": 23,
+        "column": 117
+      },
+      "end": {
+        "line": 23,
+        "column": 199
+      }
+    },
+    "uid-61": {
+      "start": {
+        "line": 24,
+        "column": 4
+      },
+      "end": {
+        "line": 24,
+        "column": 213
+      }
+    },
+    "uid-62": {
+      "start": {
+        "line": 24,
+        "column": 66
+      },
+      "end": {
+        "line": 24,
+        "column": 118
+      }
+    },
+    "uid-63": {
+      "start": {
+        "line": 24,
+        "column": 118
+      },
+      "end": {
+        "line": 24,
+        "column": 201
+      }
+    },
+    "uid-64": {
+      "start": {
+        "line": 25,
+        "column": 4
+      },
+      "end": {
+        "line": 25,
+        "column": 216
+      }
+    },
+    "uid-65": {
+      "start": {
+        "line": 25,
+        "column": 66
+      },
+      "end": {
+        "line": 25,
+        "column": 123
+      }
+    },
+    "uid-66": {
+      "start": {
+        "line": 25,
+        "column": 123
+      },
+      "end": {
+        "line": 25,
+        "column": 204
+      }
+    },
+    "uid-67": {
+      "start": {
+        "line": 26,
+        "column": 4
+      },
+      "end": {
+        "line": 26,
+        "column": 208
+      }
+    },
+    "uid-68": {
+      "start": {
+        "line": 26,
+        "column": 66
+      },
+      "end": {
+        "line": 26,
+        "column": 115
+      }
+    },
+    "uid-69": {
+      "start": {
+        "line": 26,
+        "column": 115
+      },
+      "end": {
+        "line": 26,
+        "column": 196
+      }
+    },
+    "uid-70": {
+      "start": {
+        "line": 28,
+        "column": 2
+      },
+      "end": {
+        "line": 28,
         "column": 110
       }
     }

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "iwsdk": {
+      "command": "node",
+      "args": [
+        "/home/hatch/workspace/neon-mines/node_modules/@iwsdk/cli/dist/cli.js",
+        "mcp",
+        "stdio"
+      ]
+    }
+  }
+}
