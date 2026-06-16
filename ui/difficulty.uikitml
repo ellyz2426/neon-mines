@@ -1,0 +1,9 @@
+<container flexDirection="column" alignItems="center" gap="8" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#0ff">SELECT DIFFICULTY</text>
+  <container flexDirection="column" gap="6" width="200">
+    <text name="btn-easy" fontSize="16" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="6" borderRadius="6" borderColor="#0f06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#0f04">EASY (8x8, 10 mines)</text>
+    <text name="btn-medium" fontSize="16" fontWeight="bold" color="#ff0" backgroundColor="#ff02" padding="6" borderRadius="6" borderColor="#ff06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#ff04">MEDIUM (12x12, 30)</text>
+    <text name="btn-hard" fontSize="16" fontWeight="bold" color="#f00" backgroundColor="#f002" padding="6" borderRadius="6" borderColor="#f006" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#f004">HARD (16x16, 60)</text>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

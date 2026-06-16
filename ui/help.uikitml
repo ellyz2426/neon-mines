@@ -1,0 +1,29 @@
+<container flexDirection="column" alignItems="center" gap="4" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#88f">HOW TO PLAY</text>
+  <container flexDirection="column" gap="4" width="260">
+    <text fontSize="12" fontWeight="bold" color="#0ff">-- BROWSER CONTROLS --</text>
+    <text fontSize="10" color="#ccc">Left Click: Reveal tile</text>
+    <text fontSize="10" color="#ccc">Right Click: Flag/unflag mine</text>
+    <text fontSize="10" color="#ccc">Middle Click: Quick reveal neighbors</text>
+    <text fontSize="10" color="#ccc">ESC / P: Pause</text>
+    <text fontSize="10" color="#ccc">R: Restart (game over)</text>
+    <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- VR CONTROLS --</text>
+    <text fontSize="10" color="#ccc">Right Trigger: Reveal tile</text>
+    <text fontSize="10" color="#ccc">Right Grip/A: Flag tile</text>
+    <text fontSize="10" color="#ccc">B: Pause</text>
+    <text fontSize="10" color="#ccc">Laser pointer: Aim at tiles</text>
+    <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- RULES --</text>
+    <text fontSize="10" color="#ccc">Numbers show adjacent mines (1-8)</text>
+    <text fontSize="10" color="#ccc">Empty tiles auto-reveal neighbors</text>
+    <text fontSize="10" color="#ccc">Flag all mines to win, or reveal all safe tiles</text>
+    <text fontSize="10" color="#ccc">Hit a mine and it is game over!</text>
+    <text fontSize="12" fontWeight="bold" color="#0ff" marginTop="4">-- MODES --</text>
+    <text fontSize="10" color="#ccc">Classic: Standard minesweeper</text>
+    <text fontSize="10" color="#ccc">Timed: Race against the clock</text>
+    <text fontSize="10" color="#ccc">No-Flag: Win without flagging</text>
+    <text fontSize="10" color="#ccc">Daily: Same puzzle for everyone</text>
+    <text fontSize="10" color="#ccc">Zen: No timer, infinite lives</text>
+    <text fontSize="10" color="#ccc">Practice: Learn the ropes</text>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

@@ -1,0 +1,33 @@
+<container flexDirection="column" alignItems="center" gap="6" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text name="result-title" fontSize="24" fontWeight="bold" color="#0f0">MINEFIELD CLEARED!</text>
+  <container flexDirection="column" gap="4" width="220">
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Time</text>
+      <text name="result-time" fontSize="12" fontWeight="bold" color="#0ff">0:00</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Mines</text>
+      <text name="result-mines" fontSize="12" fontWeight="bold" color="#0f0">10</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Grid</text>
+      <text name="result-grid" fontSize="12" fontWeight="bold" color="#ff0">8x8</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Flags Used</text>
+      <text name="result-flags" fontSize="12" fontWeight="bold" color="#f80">0</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Efficiency</text>
+      <text name="result-efficiency" fontSize="12" fontWeight="bold" color="#f0f">100%</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Rating</text>
+      <text name="result-rating" fontSize="12" fontWeight="bold" color="#ff0">S</text>
+    </container>
+  </container>
+  <container flexDirection="row" gap="8" marginTop="4">
+    <text name="btn-rematch" fontSize="14" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="5" borderRadius="6" borderColor="#0f06" borderWidth="1" cursor="pointer" hover-backgroundColor="#0f04">REMATCH</text>
+    <text name="btn-menu" fontSize="14" fontWeight="bold" color="#888" backgroundColor="#8882" padding="5" borderRadius="6" borderColor="#8886" borderWidth="1" cursor="pointer" hover-backgroundColor="#8884">MENU</text>
+  </container>
+</container>

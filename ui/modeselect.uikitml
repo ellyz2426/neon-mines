@@ -1,0 +1,12 @@
+<container flexDirection="column" alignItems="center" gap="8" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#0ff">SELECT MODE</text>
+  <container flexDirection="column" gap="5" width="220">
+    <text name="btn-classic" fontSize="14" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="5" borderRadius="6" borderColor="#0f06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#0f04">CLASSIC</text>
+    <text name="btn-timed" fontSize="14" fontWeight="bold" color="#ff0" backgroundColor="#ff02" padding="5" borderRadius="6" borderColor="#ff06" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#ff04">TIMED</text>
+    <text name="btn-noflag" fontSize="14" fontWeight="bold" color="#f0f" backgroundColor="#f0f2" padding="5" borderRadius="6" borderColor="#f0f6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#f0f4">NO-FLAG</text>
+    <text name="btn-daily" fontSize="14" fontWeight="bold" color="#f80" backgroundColor="#f802" padding="5" borderRadius="6" borderColor="#f806" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#f804">DAILY CHALLENGE</text>
+    <text name="btn-zen" fontSize="14" fontWeight="bold" color="#0ff" backgroundColor="#0ff2" padding="5" borderRadius="6" borderColor="#0ff6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#0ff4">ZEN</text>
+    <text name="btn-practice" fontSize="14" fontWeight="bold" color="#aaa" backgroundColor="#aaa2" padding="5" borderRadius="6" borderColor="#aaa6" borderWidth="1" textAlign="center" cursor="pointer" hover-backgroundColor="#aaa4">PRACTICE</text>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

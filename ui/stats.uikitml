@@ -1,0 +1,18 @@
+<container flexDirection="column" alignItems="center" gap="4" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#0ff">CAREER STATS</text>
+  <container flexDirection="column" gap="3" width="230">
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Games Played</text><text name="stat-games" fontSize="11" fontWeight="bold" color="#fff">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Games Won</text><text name="stat-wins" fontSize="11" fontWeight="bold" color="#0f0">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Win Rate</text><text name="stat-winrate" fontSize="11" fontWeight="bold" color="#ff0">0%</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Time (Easy)</text><text name="stat-best-easy" fontSize="11" fontWeight="bold" color="#0ff">--:--</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Time (Medium)</text><text name="stat-best-med" fontSize="11" fontWeight="bold" color="#0ff">--:--</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Time (Hard)</text><text name="stat-best-hard" fontSize="11" fontWeight="bold" color="#0ff">--:--</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Tiles Revealed</text><text name="stat-tiles" fontSize="11" fontWeight="bold" color="#f80">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Mines Flagged</text><text name="stat-flagged" fontSize="11" fontWeight="bold" color="#f0f">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Mines Detonated</text><text name="stat-detonated" fontSize="11" fontWeight="bold" color="#f00">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Win Streak</text><text name="stat-streak" fontSize="11" fontWeight="bold" color="#0f0">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Best Streak</text><text name="stat-beststreak" fontSize="11" fontWeight="bold" color="#ff0">0</text></container>
+    <container flexDirection="row" justifyContent="space-between"><text fontSize="11" color="#888">Play Time</text><text name="stat-playtime" fontSize="11" fontWeight="bold" color="#aaa">0m</text></container>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

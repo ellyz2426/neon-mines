@@ -1,0 +1,27 @@
+<container flexDirection="column" alignItems="center" gap="4" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#0ff6" borderWidth="1">
+  <text fontSize="20" fontWeight="bold" color="#f80">ACHIEVEMENTS</text>
+  <text name="ach-count" fontSize="10" color="#888">0 / 40 unlocked</text>
+  <container flexDirection="column" gap="3" width="260">
+    <container name="ach-0" flexDirection="row" gap="4"><text name="a0-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a0-name" fontSize="10" color="#fff">-</text><text name="a0-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-1" flexDirection="row" gap="4"><text name="a1-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a1-name" fontSize="10" color="#fff">-</text><text name="a1-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-2" flexDirection="row" gap="4"><text name="a2-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a2-name" fontSize="10" color="#fff">-</text><text name="a2-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-3" flexDirection="row" gap="4"><text name="a3-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a3-name" fontSize="10" color="#fff">-</text><text name="a3-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-4" flexDirection="row" gap="4"><text name="a4-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a4-name" fontSize="10" color="#fff">-</text><text name="a4-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-5" flexDirection="row" gap="4"><text name="a5-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a5-name" fontSize="10" color="#fff">-</text><text name="a5-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-6" flexDirection="row" gap="4"><text name="a6-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a6-name" fontSize="10" color="#fff">-</text><text name="a6-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-7" flexDirection="row" gap="4"><text name="a7-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a7-name" fontSize="10" color="#fff">-</text><text name="a7-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-8" flexDirection="row" gap="4"><text name="a8-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a8-name" fontSize="10" color="#fff">-</text><text name="a8-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-9" flexDirection="row" gap="4"><text name="a9-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a9-name" fontSize="10" color="#fff">-</text><text name="a9-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-10" flexDirection="row" gap="4"><text name="a10-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a10-name" fontSize="10" color="#fff">-</text><text name="a10-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-11" flexDirection="row" gap="4"><text name="a11-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a11-name" fontSize="10" color="#fff">-</text><text name="a11-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-12" flexDirection="row" gap="4"><text name="a12-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a12-name" fontSize="10" color="#fff">-</text><text name="a12-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-13" flexDirection="row" gap="4"><text name="a13-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a13-name" fontSize="10" color="#fff">-</text><text name="a13-desc" fontSize="8" color="#888">-</text></container></container>
+    <container name="ach-14" flexDirection="row" gap="4"><text name="a14-check" fontSize="10" color="#444" width="14">[  ]</text><container flexDirection="column"><text name="a14-name" fontSize="10" color="#fff">-</text><text name="a14-desc" fontSize="8" color="#888">-</text></container></container>
+  </container>
+  <container flexDirection="row" gap="8">
+    <text name="btn-prev" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">&lt; PREV</text>
+    <text name="ach-page" fontSize="10" color="#666">1/3</text>
+    <text name="btn-next" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">NEXT &gt;</text>
+  </container>
+  <text name="btn-back" fontSize="12" color="#888" padding="4" cursor="pointer" hover-color="#fff">BACK</text>
+</container>

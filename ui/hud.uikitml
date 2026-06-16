@@ -1,0 +1,22 @@
+<container flexDirection="row" gap="12" padding="6" backgroundColor="#000a" borderRadius="8" borderColor="#0ff4" borderWidth="1">
+  <container flexDirection="column" alignItems="center" gap="2">
+    <text fontSize="8" color="#0ff8">TIME</text>
+    <text name="hud-time" fontSize="14" fontWeight="bold" color="#0ff">0:00</text>
+  </container>
+  <container flexDirection="column" alignItems="center" gap="2">
+    <text fontSize="8" color="#0f08">MINES</text>
+    <text name="hud-mines" fontSize="14" fontWeight="bold" color="#0f0">10</text>
+  </container>
+  <container flexDirection="column" alignItems="center" gap="2">
+    <text fontSize="8" color="#ff08">FLAGS</text>
+    <text name="hud-flags" fontSize="14" fontWeight="bold" color="#ff0">0</text>
+  </container>
+  <container flexDirection="column" alignItems="center" gap="2">
+    <text fontSize="8" color="#f808">TILES</text>
+    <text name="hud-tiles" fontSize="14" fontWeight="bold" color="#f80">54</text>
+  </container>
+  <container flexDirection="column" alignItems="center" gap="2">
+    <text fontSize="8" color="#fff8">MODE</text>
+    <text name="hud-mode" fontSize="10" fontWeight="bold" color="#fff">CLASSIC</text>
+  </container>
+</container>

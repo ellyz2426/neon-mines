@@ -1,0 +1,4 @@
+<container flexDirection="column" alignItems="center" gap="2" padding="4" backgroundColor="#000a" borderRadius="6">
+  <text name="hover-text" fontSize="10" fontWeight="bold" color="#0ff">Tile (3, 5)</text>
+  <text name="hover-info" fontSize="8" color="#888">Click to reveal</text>
+</container>

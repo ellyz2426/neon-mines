@@ -1,0 +1,22 @@
+<container flexDirection="column" alignItems="center" gap="6" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#f006" borderWidth="2">
+  <text fontSize="28" fontWeight="bold" color="#f00">BOOM!</text>
+  <text name="explode-msg" fontSize="12" color="#f88">You hit a mine!</text>
+  <container flexDirection="column" gap="3" width="200">
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="11" color="#888">Time</text>
+      <text name="explode-time" fontSize="11" fontWeight="bold" color="#0ff">0:00</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="11" color="#888">Tiles Revealed</text>
+      <text name="explode-tiles" fontSize="11" fontWeight="bold" color="#f80">0</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="11" color="#888">Progress</text>
+      <text name="explode-progress" fontSize="11" fontWeight="bold" color="#ff0">0%</text>
+    </container>
+  </container>
+  <container flexDirection="row" gap="8" marginTop="4">
+    <text name="btn-retry" fontSize="14" fontWeight="bold" color="#0f0" backgroundColor="#0f02" padding="5" borderRadius="6" borderColor="#0f06" borderWidth="1" cursor="pointer" hover-backgroundColor="#0f04">RETRY</text>
+    <text name="btn-menu2" fontSize="14" fontWeight="bold" color="#888" backgroundColor="#8882" padding="5" borderRadius="6" borderColor="#8886" borderWidth="1" cursor="pointer" hover-backgroundColor="#8884">MENU</text>
+  </container>
+</container>
