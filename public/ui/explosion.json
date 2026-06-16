@@ -7,7 +7,7 @@
         "sourceTag": "text",
         "type": "custom",
         "children": [
-          "BOOM!"
+          "💥 BOOM!"
         ],
         "properties": {
           "fontsize": "28",
@@ -143,6 +143,80 @@
               "justifycontent": "space-between"
             },
             "dataUid": "uid-11"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Best Combo"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-15"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "explode-combo",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#f0f"
+                },
+                "dataUid": "uid-16"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-14"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Hints Used"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-18"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "explode-hints",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#ff0"
+                },
+                "dataUid": "uid-19"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-17"
           }
         ],
         "properties": {
@@ -175,7 +249,7 @@
               "cursor": "pointer",
               "hoverBackgroundcolor": "#0f04"
             },
-            "dataUid": "uid-15"
+            "dataUid": "uid-21"
           },
           {
             "sourceTag": "text",
@@ -196,7 +270,7 @@
               "cursor": "pointer",
               "hoverBackgroundcolor": "#8884"
             },
-            "dataUid": "uid-16"
+            "dataUid": "uid-22"
           }
         ],
         "properties": {
@@ -204,7 +278,7 @@
           "gap": "8",
           "margintop": "4"
         },
-        "dataUid": "uid-14"
+        "dataUid": "uid-20"
       }
     ],
     "properties": {
@@ -227,7 +301,7 @@
         "column": 0
       },
       "end": {
-        "line": 21,
+        "line": 29,
         "column": 12
       }
     },
@@ -238,7 +312,7 @@
       },
       "end": {
         "line": 1,
-        "column": 65
+        "column": 68
       }
     },
     "uid-3": {
@@ -257,7 +331,7 @@
         "column": 2
       },
       "end": {
-        "line": 16,
+        "line": 24,
         "column": 14
       }
     },
@@ -353,31 +427,91 @@
     },
     "uid-14": {
       "start": {
-        "line": 17,
-        "column": 2
+        "line": 16,
+        "column": 4
       },
       "end": {
-        "line": 20,
-        "column": 14
+        "line": 19,
+        "column": 16
       }
     },
     "uid-15": {
       "start": {
-        "line": 18,
-        "column": 4
+        "line": 17,
+        "column": 6
       },
       "end": {
-        "line": 18,
-        "column": 220
+        "line": 17,
+        "column": 56
       }
     },
     "uid-16": {
       "start": {
-        "line": 19,
+        "line": 18,
+        "column": 6
+      },
+      "end": {
+        "line": 18,
+        "column": 86
+      }
+    },
+    "uid-17": {
+      "start": {
+        "line": 20,
         "column": 4
       },
       "end": {
-        "line": 19,
+        "line": 23,
+        "column": 16
+      }
+    },
+    "uid-18": {
+      "start": {
+        "line": 21,
+        "column": 6
+      },
+      "end": {
+        "line": 21,
+        "column": 56
+      }
+    },
+    "uid-19": {
+      "start": {
+        "line": 22,
+        "column": 6
+      },
+      "end": {
+        "line": 22,
+        "column": 86
+      }
+    },
+    "uid-20": {
+      "start": {
+        "line": 25,
+        "column": 2
+      },
+      "end": {
+        "line": 28,
+        "column": 14
+      }
+    },
+    "uid-21": {
+      "start": {
+        "line": 26,
+        "column": 4
+      },
+      "end": {
+        "line": 26,
+        "column": 220
+      }
+    },
+    "uid-22": {
+      "start": {
+        "line": 27,
+        "column": 4
+      },
+      "end": {
+        "line": 27,
         "column": 219
       }
     }

@@ -8,36 +8,204 @@
         "type": "custom",
         "children": [
           {
-            "sourceTag": "text",
+            "sourceTag": "container",
             "type": "custom",
             "children": [
-              "TIME"
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "TIME"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#0ff8"
+                },
+                "dataUid": "uid-4"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0:00"
+                ],
+                "properties": {
+                  "name": "hud-time",
+                  "fontsize": "14",
+                  "fontweight": "bold",
+                  "color": "#0ff"
+                },
+                "dataUid": "uid-5"
+              }
             ],
             "properties": {
-              "fontsize": "8",
-              "color": "#0ff8"
+              "flexdirection": "column",
+              "alignitems": "center",
+              "gap": "2"
             },
             "dataUid": "uid-3"
           },
           {
-            "sourceTag": "text",
+            "sourceTag": "container",
             "type": "custom",
             "children": [
-              "0:00"
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "MINES"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#0f08"
+                },
+                "dataUid": "uid-7"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "10"
+                ],
+                "properties": {
+                  "name": "hud-mines",
+                  "fontsize": "14",
+                  "fontweight": "bold",
+                  "color": "#0f0"
+                },
+                "dataUid": "uid-8"
+              }
             ],
             "properties": {
-              "name": "hud-time",
-              "fontsize": "14",
-              "fontweight": "bold",
-              "color": "#0ff"
+              "flexdirection": "column",
+              "alignitems": "center",
+              "gap": "2"
             },
-            "dataUid": "uid-4"
+            "dataUid": "uid-6"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "FLAGS"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#ff08"
+                },
+                "dataUid": "uid-10"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "hud-flags",
+                  "fontsize": "14",
+                  "fontweight": "bold",
+                  "color": "#ff0"
+                },
+                "dataUid": "uid-11"
+              }
+            ],
+            "properties": {
+              "flexdirection": "column",
+              "alignitems": "center",
+              "gap": "2"
+            },
+            "dataUid": "uid-9"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "TILES"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#f808"
+                },
+                "dataUid": "uid-13"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "54"
+                ],
+                "properties": {
+                  "name": "hud-tiles",
+                  "fontsize": "14",
+                  "fontweight": "bold",
+                  "color": "#f80"
+                },
+                "dataUid": "uid-14"
+              }
+            ],
+            "properties": {
+              "flexdirection": "column",
+              "alignitems": "center",
+              "gap": "2"
+            },
+            "dataUid": "uid-12"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "MODE"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#fff8"
+                },
+                "dataUid": "uid-16"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "CLASSIC"
+                ],
+                "properties": {
+                  "name": "hud-mode",
+                  "fontsize": "10",
+                  "fontweight": "bold",
+                  "color": "#fff"
+                },
+                "dataUid": "uid-17"
+              }
+            ],
+            "properties": {
+              "flexdirection": "column",
+              "alignitems": "center",
+              "gap": "2"
+            },
+            "dataUid": "uid-15"
           }
         ],
         "properties": {
-          "flexdirection": "column",
-          "alignitems": "center",
-          "gap": "2"
+          "flexdirection": "row",
+          "gap": "12",
+          "padding": "6",
+          "backgroundcolor": "#000a",
+          "borderradius": "8",
+          "bordercolor": "#0ff4",
+          "borderwidth": "1"
         },
         "dataUid": "uid-2"
       },
@@ -46,162 +214,132 @@
         "type": "custom",
         "children": [
           {
-            "sourceTag": "text",
+            "sourceTag": "container",
             "type": "custom",
             "children": [
-              "MINES"
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "COMBO"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#f0f8"
+                },
+                "dataUid": "uid-20"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "hud-combo",
+                  "fontsize": "12",
+                  "fontweight": "bold",
+                  "color": "#f0f"
+                },
+                "dataUid": "uid-21"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "x1"
+                ],
+                "properties": {
+                  "name": "hud-combo-mult",
+                  "fontsize": "8",
+                  "color": "#f0fa"
+                },
+                "dataUid": "uid-22"
+              }
             ],
             "properties": {
-              "fontsize": "8",
-              "color": "#0f08"
+              "flexdirection": "row",
+              "alignitems": "center",
+              "gap": "4"
             },
-            "dataUid": "uid-6"
+            "dataUid": "uid-19"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "XP"
+                ],
+                "properties": {
+                  "fontsize": "8",
+                  "color": "#0f88"
+                },
+                "dataUid": "uid-24"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "hud-xp",
+                  "fontsize": "12",
+                  "fontweight": "bold",
+                  "color": "#0f8"
+                },
+                "dataUid": "uid-25"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "alignitems": "center",
+              "gap": "4"
+            },
+            "dataUid": "uid-23"
           },
           {
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "10"
+              "💡 HINT"
             ],
             "properties": {
-              "name": "hud-mines",
-              "fontsize": "14",
-              "fontweight": "bold",
-              "color": "#0f0"
-            },
-            "dataUid": "uid-7"
-          }
-        ],
-        "properties": {
-          "flexdirection": "column",
-          "alignitems": "center",
-          "gap": "2"
-        },
-        "dataUid": "uid-5"
-      },
-      {
-        "sourceTag": "container",
-        "type": "custom",
-        "children": [
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "FLAGS"
-            ],
-            "properties": {
-              "fontsize": "8",
-              "color": "#ff08"
-            },
-            "dataUid": "uid-9"
-          },
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "0"
-            ],
-            "properties": {
-              "name": "hud-flags",
-              "fontsize": "14",
-              "fontweight": "bold",
-              "color": "#ff0"
-            },
-            "dataUid": "uid-10"
-          }
-        ],
-        "properties": {
-          "flexdirection": "column",
-          "alignitems": "center",
-          "gap": "2"
-        },
-        "dataUid": "uid-8"
-      },
-      {
-        "sourceTag": "container",
-        "type": "custom",
-        "children": [
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "TILES"
-            ],
-            "properties": {
-              "fontsize": "8",
-              "color": "#f808"
-            },
-            "dataUid": "uid-12"
-          },
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "54"
-            ],
-            "properties": {
-              "name": "hud-tiles",
-              "fontsize": "14",
-              "fontweight": "bold",
-              "color": "#f80"
-            },
-            "dataUid": "uid-13"
-          }
-        ],
-        "properties": {
-          "flexdirection": "column",
-          "alignitems": "center",
-          "gap": "2"
-        },
-        "dataUid": "uid-11"
-      },
-      {
-        "sourceTag": "container",
-        "type": "custom",
-        "children": [
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "MODE"
-            ],
-            "properties": {
-              "fontsize": "8",
-              "color": "#fff8"
-            },
-            "dataUid": "uid-15"
-          },
-          {
-            "sourceTag": "text",
-            "type": "custom",
-            "children": [
-              "CLASSIC"
-            ],
-            "properties": {
-              "name": "hud-mode",
+              "name": "btn-hint",
               "fontsize": "10",
               "fontweight": "bold",
-              "color": "#fff"
+              "color": "#ff0",
+              "backgroundcolor": "#ff01",
+              "padding": "3",
+              "borderradius": "4",
+              "bordercolor": "#ff04",
+              "borderwidth": "1",
+              "cursor": "pointer",
+              "hoverBackgroundcolor": "#ff03"
             },
-            "dataUid": "uid-16"
+            "dataUid": "uid-26"
           }
         ],
         "properties": {
-          "flexdirection": "column",
-          "alignitems": "center",
-          "gap": "2"
+          "flexdirection": "row",
+          "gap": "12",
+          "padding": "4",
+          "backgroundcolor": "#000a",
+          "borderradius": "6",
+          "bordercolor": "#0ff2",
+          "borderwidth": "1"
         },
-        "dataUid": "uid-14"
+        "dataUid": "uid-18"
       }
     ],
     "properties": {
-      "flexdirection": "row",
-      "gap": "12",
-      "padding": "6",
-      "backgroundcolor": "#000a",
-      "borderradius": "8",
-      "bordercolor": "#0ff4",
-      "borderwidth": "1"
+      "flexdirection": "column",
+      "alignitems": "center",
+      "gap": "4"
     },
     "dataUid": "uid-1"
   },
@@ -213,7 +351,7 @@
         "column": 0
       },
       "end": {
-        "line": 21,
+        "line": 35,
         "column": 12
       }
     },
@@ -223,7 +361,7 @@
         "column": 2
       },
       "end": {
-        "line": 4,
+        "line": 22,
         "column": 14
       }
     },
@@ -233,28 +371,28 @@
         "column": 4
       },
       "end": {
-        "line": 2,
-        "column": 48
+        "line": 5,
+        "column": 16
       }
     },
     "uid-4": {
       "start": {
         "line": 3,
-        "column": 4
+        "column": 6
       },
       "end": {
         "line": 3,
-        "column": 82
+        "column": 50
       }
     },
     "uid-5": {
       "start": {
-        "line": 5,
-        "column": 2
+        "line": 4,
+        "column": 6
       },
       "end": {
-        "line": 8,
-        "column": 14
+        "line": 4,
+        "column": 84
       }
     },
     "uid-6": {
@@ -263,28 +401,28 @@
         "column": 4
       },
       "end": {
-        "line": 6,
-        "column": 49
+        "line": 9,
+        "column": 16
       }
     },
     "uid-7": {
       "start": {
         "line": 7,
-        "column": 4
+        "column": 6
       },
       "end": {
         "line": 7,
-        "column": 81
+        "column": 51
       }
     },
     "uid-8": {
       "start": {
-        "line": 9,
-        "column": 2
+        "line": 8,
+        "column": 6
       },
       "end": {
-        "line": 12,
-        "column": 14
+        "line": 8,
+        "column": 83
       }
     },
     "uid-9": {
@@ -293,28 +431,28 @@
         "column": 4
       },
       "end": {
-        "line": 10,
-        "column": 49
+        "line": 13,
+        "column": 16
       }
     },
     "uid-10": {
       "start": {
         "line": 11,
-        "column": 4
+        "column": 6
       },
       "end": {
         "line": 11,
-        "column": 80
+        "column": 51
       }
     },
     "uid-11": {
       "start": {
-        "line": 13,
-        "column": 2
+        "line": 12,
+        "column": 6
       },
       "end": {
-        "line": 16,
-        "column": 14
+        "line": 12,
+        "column": 82
       }
     },
     "uid-12": {
@@ -323,28 +461,28 @@
         "column": 4
       },
       "end": {
-        "line": 14,
-        "column": 49
+        "line": 17,
+        "column": 16
       }
     },
     "uid-13": {
       "start": {
         "line": 15,
-        "column": 4
+        "column": 6
       },
       "end": {
         "line": 15,
-        "column": 81
+        "column": 51
       }
     },
     "uid-14": {
       "start": {
-        "line": 17,
-        "column": 2
+        "line": 16,
+        "column": 6
       },
       "end": {
-        "line": 20,
-        "column": 14
+        "line": 16,
+        "column": 83
       }
     },
     "uid-15": {
@@ -353,18 +491,118 @@
         "column": 4
       },
       "end": {
-        "line": 18,
-        "column": 48
+        "line": 21,
+        "column": 16
       }
     },
     "uid-16": {
       "start": {
         "line": 19,
-        "column": 4
+        "column": 6
       },
       "end": {
         "line": 19,
-        "column": 85
+        "column": 50
+      }
+    },
+    "uid-17": {
+      "start": {
+        "line": 20,
+        "column": 6
+      },
+      "end": {
+        "line": 20,
+        "column": 87
+      }
+    },
+    "uid-18": {
+      "start": {
+        "line": 23,
+        "column": 2
+      },
+      "end": {
+        "line": 34,
+        "column": 14
+      }
+    },
+    "uid-19": {
+      "start": {
+        "line": 24,
+        "column": 4
+      },
+      "end": {
+        "line": 28,
+        "column": 16
+      }
+    },
+    "uid-20": {
+      "start": {
+        "line": 25,
+        "column": 6
+      },
+      "end": {
+        "line": 25,
+        "column": 51
+      }
+    },
+    "uid-21": {
+      "start": {
+        "line": 26,
+        "column": 6
+      },
+      "end": {
+        "line": 26,
+        "column": 82
+      }
+    },
+    "uid-22": {
+      "start": {
+        "line": 27,
+        "column": 6
+      },
+      "end": {
+        "line": 27,
+        "column": 70
+      }
+    },
+    "uid-23": {
+      "start": {
+        "line": 29,
+        "column": 4
+      },
+      "end": {
+        "line": 32,
+        "column": 16
+      }
+    },
+    "uid-24": {
+      "start": {
+        "line": 30,
+        "column": 6
+      },
+      "end": {
+        "line": 30,
+        "column": 48
+      }
+    },
+    "uid-25": {
+      "start": {
+        "line": 31,
+        "column": 6
+      },
+      "end": {
+        "line": 31,
+        "column": 79
+      }
+    },
+    "uid-26": {
+      "start": {
+        "line": 33,
+        "column": 4
+      },
+      "end": {
+        "line": 33,
+        "column": 221
       }
     }
   }

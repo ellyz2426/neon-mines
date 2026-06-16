@@ -214,13 +214,124 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Rating"
+                  "Best Combo"
                 ],
                 "properties": {
                   "fontsize": "12",
                   "color": "#888"
                 },
                 "dataUid": "uid-20"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "result-combo",
+                  "fontsize": "12",
+                  "fontweight": "bold",
+                  "color": "#f0f"
+                },
+                "dataUid": "uid-21"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-19"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Hints Used"
+                ],
+                "properties": {
+                  "fontsize": "12",
+                  "color": "#888"
+                },
+                "dataUid": "uid-23"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "result-hints",
+                  "fontsize": "12",
+                  "fontweight": "bold",
+                  "color": "#ff0"
+                },
+                "dataUid": "uid-24"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-22"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Combo Bonus"
+                ],
+                "properties": {
+                  "fontsize": "12",
+                  "color": "#888"
+                },
+                "dataUid": "uid-26"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "+0 XP"
+                ],
+                "properties": {
+                  "name": "result-combobonus",
+                  "fontsize": "12",
+                  "fontweight": "bold",
+                  "color": "#f0f"
+                },
+                "dataUid": "uid-27"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-25"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Rating"
+                ],
+                "properties": {
+                  "fontsize": "12",
+                  "color": "#888"
+                },
+                "dataUid": "uid-29"
               },
               {
                 "sourceTag": "text",
@@ -234,14 +345,14 @@
                   "fontweight": "bold",
                   "color": "#ff0"
                 },
-                "dataUid": "uid-21"
+                "dataUid": "uid-30"
               }
             ],
             "properties": {
               "flexdirection": "row",
               "justifycontent": "space-between"
             },
-            "dataUid": "uid-19"
+            "dataUid": "uid-28"
           }
         ],
         "properties": {
@@ -274,7 +385,7 @@
               "cursor": "pointer",
               "hoverBackgroundcolor": "#0f04"
             },
-            "dataUid": "uid-23"
+            "dataUid": "uid-32"
           },
           {
             "sourceTag": "text",
@@ -295,7 +406,7 @@
               "cursor": "pointer",
               "hoverBackgroundcolor": "#8884"
             },
-            "dataUid": "uid-24"
+            "dataUid": "uid-33"
           }
         ],
         "properties": {
@@ -303,7 +414,7 @@
           "gap": "8",
           "margintop": "4"
         },
-        "dataUid": "uid-22"
+        "dataUid": "uid-31"
       }
     ],
     "properties": {
@@ -326,7 +437,7 @@
         "column": 0
       },
       "end": {
-        "line": 32,
+        "line": 44,
         "column": 12
       }
     },
@@ -346,7 +457,7 @@
         "column": 2
       },
       "end": {
-        "line": 27,
+        "line": 39,
         "column": 14
       }
     },
@@ -517,7 +628,7 @@
       },
       "end": {
         "line": 24,
-        "column": 52
+        "column": 56
       }
     },
     "uid-21": {
@@ -527,36 +638,126 @@
       },
       "end": {
         "line": 25,
-        "column": 86
+        "column": 85
       }
     },
     "uid-22": {
       "start": {
-        "line": 28,
-        "column": 2
+        "line": 27,
+        "column": 4
       },
       "end": {
-        "line": 31,
-        "column": 14
+        "line": 30,
+        "column": 16
       }
     },
     "uid-23": {
       "start": {
-        "line": 29,
-        "column": 4
+        "line": 28,
+        "column": 6
       },
       "end": {
-        "line": 29,
-        "column": 224
+        "line": 28,
+        "column": 56
       }
     },
     "uid-24": {
       "start": {
-        "line": 30,
+        "line": 29,
+        "column": 6
+      },
+      "end": {
+        "line": 29,
+        "column": 85
+      }
+    },
+    "uid-25": {
+      "start": {
+        "line": 31,
         "column": 4
       },
       "end": {
-        "line": 30,
+        "line": 34,
+        "column": 16
+      }
+    },
+    "uid-26": {
+      "start": {
+        "line": 32,
+        "column": 6
+      },
+      "end": {
+        "line": 32,
+        "column": 57
+      }
+    },
+    "uid-27": {
+      "start": {
+        "line": 33,
+        "column": 6
+      },
+      "end": {
+        "line": 33,
+        "column": 94
+      }
+    },
+    "uid-28": {
+      "start": {
+        "line": 35,
+        "column": 4
+      },
+      "end": {
+        "line": 38,
+        "column": 16
+      }
+    },
+    "uid-29": {
+      "start": {
+        "line": 36,
+        "column": 6
+      },
+      "end": {
+        "line": 36,
+        "column": 52
+      }
+    },
+    "uid-30": {
+      "start": {
+        "line": 37,
+        "column": 6
+      },
+      "end": {
+        "line": 37,
+        "column": 86
+      }
+    },
+    "uid-31": {
+      "start": {
+        "line": 40,
+        "column": 2
+      },
+      "end": {
+        "line": 43,
+        "column": 14
+      }
+    },
+    "uid-32": {
+      "start": {
+        "line": 41,
+        "column": 4
+      },
+      "end": {
+        "line": 41,
+        "column": 224
+      }
+    },
+    "uid-33": {
+      "start": {
+        "line": 42,
+        "column": 4
+      },
+      "end": {
+        "line": 42,
         "column": 218
       }
     }

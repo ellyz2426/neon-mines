@@ -22,6 +22,18 @@
       <text name="result-efficiency" fontSize="12" fontWeight="bold" color="#f0f">100%</text>
     </container>
     <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Best Combo</text>
+      <text name="result-combo" fontSize="12" fontWeight="bold" color="#f0f">0</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Hints Used</text>
+      <text name="result-hints" fontSize="12" fontWeight="bold" color="#ff0">0</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
+      <text fontSize="12" color="#888">Combo Bonus</text>
+      <text name="result-combobonus" fontSize="12" fontWeight="bold" color="#f0f">+0 XP</text>
+    </container>
+    <container flexDirection="row" justifyContent="space-between">
       <text fontSize="12" color="#888">Rating</text>
       <text name="result-rating" fontSize="12" fontWeight="bold" color="#ff0">S</text>
     </container>

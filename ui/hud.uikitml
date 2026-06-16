@@ -1,22 +1,36 @@
-<container flexDirection="row" gap="12" padding="6" backgroundColor="#000a" borderRadius="8" borderColor="#0ff4" borderWidth="1">
-  <container flexDirection="column" alignItems="center" gap="2">
-    <text fontSize="8" color="#0ff8">TIME</text>
-    <text name="hud-time" fontSize="14" fontWeight="bold" color="#0ff">0:00</text>
+<container flexDirection="column" alignItems="center" gap="4">
+  <container flexDirection="row" gap="12" padding="6" backgroundColor="#000a" borderRadius="8" borderColor="#0ff4" borderWidth="1">
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#0ff8">TIME</text>
+      <text name="hud-time" fontSize="14" fontWeight="bold" color="#0ff">0:00</text>
+    </container>
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#0f08">MINES</text>
+      <text name="hud-mines" fontSize="14" fontWeight="bold" color="#0f0">10</text>
+    </container>
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#ff08">FLAGS</text>
+      <text name="hud-flags" fontSize="14" fontWeight="bold" color="#ff0">0</text>
+    </container>
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#f808">TILES</text>
+      <text name="hud-tiles" fontSize="14" fontWeight="bold" color="#f80">54</text>
+    </container>
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#fff8">MODE</text>
+      <text name="hud-mode" fontSize="10" fontWeight="bold" color="#fff">CLASSIC</text>
+    </container>
   </container>
-  <container flexDirection="column" alignItems="center" gap="2">
-    <text fontSize="8" color="#0f08">MINES</text>
-    <text name="hud-mines" fontSize="14" fontWeight="bold" color="#0f0">10</text>
-  </container>
-  <container flexDirection="column" alignItems="center" gap="2">
-    <text fontSize="8" color="#ff08">FLAGS</text>
-    <text name="hud-flags" fontSize="14" fontWeight="bold" color="#ff0">0</text>
-  </container>
-  <container flexDirection="column" alignItems="center" gap="2">
-    <text fontSize="8" color="#f808">TILES</text>
-    <text name="hud-tiles" fontSize="14" fontWeight="bold" color="#f80">54</text>
-  </container>
-  <container flexDirection="column" alignItems="center" gap="2">
-    <text fontSize="8" color="#fff8">MODE</text>
-    <text name="hud-mode" fontSize="10" fontWeight="bold" color="#fff">CLASSIC</text>
+  <container flexDirection="row" gap="12" padding="4" backgroundColor="#000a" borderRadius="6" borderColor="#0ff2" borderWidth="1">
+    <container flexDirection="row" alignItems="center" gap="4">
+      <text fontSize="8" color="#f0f8">COMBO</text>
+      <text name="hud-combo" fontSize="12" fontWeight="bold" color="#f0f">0</text>
+      <text name="hud-combo-mult" fontSize="8" color="#f0fa">x1</text>
+    </container>
+    <container flexDirection="row" alignItems="center" gap="4">
+      <text fontSize="8" color="#0f88">XP</text>
+      <text name="hud-xp" fontSize="12" fontWeight="bold" color="#0f8">0</text>
+    </container>
+    <text name="btn-hint" fontSize="10" fontWeight="bold" color="#ff0" backgroundColor="#ff01" padding="3" borderRadius="4" borderColor="#ff04" borderWidth="1" cursor="pointer" hover-backgroundColor="#ff03">💡 HINT</text>
   </container>
 </container>
