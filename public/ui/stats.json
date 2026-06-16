@@ -246,7 +246,7 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "───── DIFFICULTY WINS ─────"
+              "----- DIFFICULTY WINS -----"
             ],
             "properties": {
               "fontsize": "10",
@@ -370,7 +370,7 @@
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "───── PERFORMANCE ─────"
+              "----- PERFORMANCE -----"
             ],
             "properties": {
               "fontsize": "10",
@@ -609,7 +609,7 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Perfect Games"
+                  "Total Undos"
                 ],
                 "properties": {
                   "fontsize": "11",
@@ -624,10 +624,10 @@
                   "0"
                 ],
                 "properties": {
-                  "name": "stat-perfect",
+                  "name": "stat-undos",
                   "fontsize": "11",
                   "fontweight": "bold",
-                  "color": "#0ff"
+                  "color": "#f80"
                 },
                 "dataUid": "uid-53"
               }
@@ -639,17 +639,91 @@
             "dataUid": "uid-51"
           },
           {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Auto-Flag Wins"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-55"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-autoflag",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#0f8"
+                },
+                "dataUid": "uid-56"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-54"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Perfect Games"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-58"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-perfect",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#0ff"
+                },
+                "dataUid": "uid-59"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-57"
+          },
+          {
             "sourceTag": "text",
             "type": "custom",
             "children": [
-              "───── STREAKS ─────"
+              "----- STREAKS -----"
             ],
             "properties": {
               "fontsize": "10",
               "color": "#0ff4",
               "margintop": "2"
             },
-            "dataUid": "uid-54"
+            "dataUid": "uid-60"
           },
           {
             "sourceTag": "container",
@@ -665,7 +739,7 @@
                   "fontsize": "11",
                   "color": "#888"
                 },
-                "dataUid": "uid-56"
+                "dataUid": "uid-62"
               },
               {
                 "sourceTag": "text",
@@ -678,80 +752,6 @@
                   "fontsize": "11",
                   "fontweight": "bold",
                   "color": "#0f0"
-                },
-                "dataUid": "uid-57"
-              }
-            ],
-            "properties": {
-              "flexdirection": "row",
-              "justifycontent": "space-between"
-            },
-            "dataUid": "uid-55"
-          },
-          {
-            "sourceTag": "container",
-            "type": "custom",
-            "children": [
-              {
-                "sourceTag": "text",
-                "type": "custom",
-                "children": [
-                  "Best Streak"
-                ],
-                "properties": {
-                  "fontsize": "11",
-                  "color": "#888"
-                },
-                "dataUid": "uid-59"
-              },
-              {
-                "sourceTag": "text",
-                "type": "custom",
-                "children": [
-                  "0"
-                ],
-                "properties": {
-                  "name": "stat-beststreak",
-                  "fontsize": "11",
-                  "fontweight": "bold",
-                  "color": "#ff0"
-                },
-                "dataUid": "uid-60"
-              }
-            ],
-            "properties": {
-              "flexdirection": "row",
-              "justifycontent": "space-between"
-            },
-            "dataUid": "uid-58"
-          },
-          {
-            "sourceTag": "container",
-            "type": "custom",
-            "children": [
-              {
-                "sourceTag": "text",
-                "type": "custom",
-                "children": [
-                  "Daily Streak"
-                ],
-                "properties": {
-                  "fontsize": "11",
-                  "color": "#888"
-                },
-                "dataUid": "uid-62"
-              },
-              {
-                "sourceTag": "text",
-                "type": "custom",
-                "children": [
-                  "0"
-                ],
-                "properties": {
-                  "name": "stat-dailystreak",
-                  "fontsize": "11",
-                  "fontweight": "bold",
-                  "color": "#f80"
                 },
                 "dataUid": "uid-63"
               }
@@ -770,7 +770,7 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Best Daily Streak"
+                  "Best Streak"
                 ],
                 "properties": {
                   "fontsize": "11",
@@ -785,10 +785,10 @@
                   "0"
                 ],
                 "properties": {
-                  "name": "stat-bestdaily",
+                  "name": "stat-beststreak",
                   "fontsize": "11",
                   "fontweight": "bold",
-                  "color": "#fa0"
+                  "color": "#ff0"
                 },
                 "dataUid": "uid-66"
               }
@@ -807,13 +807,87 @@
                 "sourceTag": "text",
                 "type": "custom",
                 "children": [
-                  "Play Time"
+                  "Daily Streak"
                 ],
                 "properties": {
                   "fontsize": "11",
                   "color": "#888"
                 },
                 "dataUid": "uid-68"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-dailystreak",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#f80"
+                },
+                "dataUid": "uid-69"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-67"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Best Daily Streak"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-71"
+              },
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "0"
+                ],
+                "properties": {
+                  "name": "stat-bestdaily",
+                  "fontsize": "11",
+                  "fontweight": "bold",
+                  "color": "#fa0"
+                },
+                "dataUid": "uid-72"
+              }
+            ],
+            "properties": {
+              "flexdirection": "row",
+              "justifycontent": "space-between"
+            },
+            "dataUid": "uid-70"
+          },
+          {
+            "sourceTag": "container",
+            "type": "custom",
+            "children": [
+              {
+                "sourceTag": "text",
+                "type": "custom",
+                "children": [
+                  "Play Time"
+                ],
+                "properties": {
+                  "fontsize": "11",
+                  "color": "#888"
+                },
+                "dataUid": "uid-74"
               },
               {
                 "sourceTag": "text",
@@ -827,14 +901,14 @@
                   "fontweight": "bold",
                   "color": "#aaa"
                 },
-                "dataUid": "uid-69"
+                "dataUid": "uid-75"
               }
             ],
             "properties": {
               "flexdirection": "row",
               "justifycontent": "space-between"
             },
-            "dataUid": "uid-67"
+            "dataUid": "uid-73"
           }
         ],
         "properties": {
@@ -858,7 +932,7 @@
           "cursor": "pointer",
           "hoverColor": "#fff"
         },
-        "dataUid": "uid-70"
+        "dataUid": "uid-76"
       }
     ],
     "properties": {
@@ -881,7 +955,7 @@
         "column": 0
       },
       "end": {
-        "line": 29,
+        "line": 31,
         "column": 12
       }
     },
@@ -901,7 +975,7 @@
         "column": 2
       },
       "end": {
-        "line": 27,
+        "line": 29,
         "column": 14
       }
     },
@@ -1382,7 +1456,7 @@
       },
       "end": {
         "line": 20,
-        "column": 210
+        "column": 206
       }
     },
     "uid-52": {
@@ -1392,17 +1466,17 @@
       },
       "end": {
         "line": 20,
-        "column": 119
+        "column": 117
       }
     },
     "uid-53": {
       "start": {
         "line": 20,
-        "column": 119
+        "column": 117
       },
       "end": {
         "line": 20,
-        "column": 198
+        "column": 194
       }
     },
     "uid-54": {
@@ -1412,67 +1486,67 @@
       },
       "end": {
         "line": 21,
-        "column": 78
+        "column": 212
       }
     },
     "uid-55": {
       "start": {
-        "line": 22,
-        "column": 4
+        "line": 21,
+        "column": 66
       },
       "end": {
-        "line": 22,
-        "column": 206
+        "line": 21,
+        "column": 120
       }
     },
     "uid-56": {
       "start": {
-        "line": 22,
-        "column": 66
+        "line": 21,
+        "column": 120
       },
       "end": {
-        "line": 22,
-        "column": 116
+        "line": 21,
+        "column": 200
       }
     },
     "uid-57": {
       "start": {
         "line": 22,
-        "column": 116
+        "column": 4
       },
       "end": {
         "line": 22,
-        "column": 194
+        "column": 210
       }
     },
     "uid-58": {
+      "start": {
+        "line": 22,
+        "column": 66
+      },
+      "end": {
+        "line": 22,
+        "column": 119
+      }
+    },
+    "uid-59": {
+      "start": {
+        "line": 22,
+        "column": 119
+      },
+      "end": {
+        "line": 22,
+        "column": 198
+      }
+    },
+    "uid-60": {
       "start": {
         "line": 23,
         "column": 4
       },
       "end": {
         "line": 23,
-        "column": 211
-      }
-    },
-    "uid-59": {
-      "start": {
-        "line": 23,
-        "column": 66
-      },
-      "end": {
-        "line": 23,
-        "column": 117
-      }
-    },
-    "uid-60": {
-      "start": {
-        "line": 23,
-        "column": 117
-      },
-      "end": {
-        "line": 23,
-        "column": 199
+        "column": 78
       }
     },
     "uid-61": {
@@ -1482,7 +1556,7 @@
       },
       "end": {
         "line": 24,
-        "column": 213
+        "column": 206
       }
     },
     "uid-62": {
@@ -1492,17 +1566,17 @@
       },
       "end": {
         "line": 24,
-        "column": 118
+        "column": 116
       }
     },
     "uid-63": {
       "start": {
         "line": 24,
-        "column": 118
+        "column": 116
       },
       "end": {
         "line": 24,
-        "column": 201
+        "column": 194
       }
     },
     "uid-64": {
@@ -1512,7 +1586,7 @@
       },
       "end": {
         "line": 25,
-        "column": 216
+        "column": 211
       }
     },
     "uid-65": {
@@ -1522,17 +1596,17 @@
       },
       "end": {
         "line": 25,
-        "column": 123
+        "column": 117
       }
     },
     "uid-66": {
       "start": {
         "line": 25,
-        "column": 123
+        "column": 117
       },
       "end": {
         "line": 25,
-        "column": 204
+        "column": 199
       }
     },
     "uid-67": {
@@ -1542,7 +1616,7 @@
       },
       "end": {
         "line": 26,
-        "column": 208
+        "column": 213
       }
     },
     "uid-68": {
@@ -1552,26 +1626,86 @@
       },
       "end": {
         "line": 26,
-        "column": 115
+        "column": 118
       }
     },
     "uid-69": {
       "start": {
         "line": 26,
-        "column": 115
+        "column": 118
       },
       "end": {
         "line": 26,
-        "column": 196
+        "column": 201
       }
     },
     "uid-70": {
       "start": {
+        "line": 27,
+        "column": 4
+      },
+      "end": {
+        "line": 27,
+        "column": 216
+      }
+    },
+    "uid-71": {
+      "start": {
+        "line": 27,
+        "column": 66
+      },
+      "end": {
+        "line": 27,
+        "column": 123
+      }
+    },
+    "uid-72": {
+      "start": {
+        "line": 27,
+        "column": 123
+      },
+      "end": {
+        "line": 27,
+        "column": 204
+      }
+    },
+    "uid-73": {
+      "start": {
         "line": 28,
-        "column": 2
+        "column": 4
       },
       "end": {
         "line": 28,
+        "column": 208
+      }
+    },
+    "uid-74": {
+      "start": {
+        "line": 28,
+        "column": 66
+      },
+      "end": {
+        "line": 28,
+        "column": 115
+      }
+    },
+    "uid-75": {
+      "start": {
+        "line": 28,
+        "column": 115
+      },
+      "end": {
+        "line": 28,
+        "column": 196
+      }
+    },
+    "uid-76": {
+      "start": {
+        "line": 30,
+        "column": 2
+      },
+      "end": {
+        "line": 30,
         "column": 110
       }
     }

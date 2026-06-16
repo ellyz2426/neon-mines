@@ -5,8 +5,8 @@
       <text name="hud-time" fontSize="14" fontWeight="bold" color="#0ff">0:00</text>
     </container>
     <container flexDirection="column" alignItems="center" gap="2">
-      <text fontSize="8" color="#0f08">MINES</text>
-      <text name="hud-mines" fontSize="14" fontWeight="bold" color="#0f0">10</text>
+      <text fontSize="8" color="#0f08">REMAINING</text>
+      <text name="hud-remaining" fontSize="14" fontWeight="bold" color="#0f0">10</text>
     </container>
     <container flexDirection="column" alignItems="center" gap="2">
       <text fontSize="8" color="#ff08">FLAGS</text>
@@ -20,6 +20,10 @@
       <text fontSize="8" color="#fff8">MODE</text>
       <text name="hud-mode" fontSize="10" fontWeight="bold" color="#fff">CLASSIC</text>
     </container>
+    <container flexDirection="column" alignItems="center" gap="2">
+      <text fontSize="8" color="#a0f8">DIFF</text>
+      <text name="hud-diff" fontSize="10" fontWeight="bold" color="#a0f">EASY</text>
+    </container>
   </container>
   <container flexDirection="row" gap="12" padding="4" backgroundColor="#000a" borderRadius="6" borderColor="#0ff2" borderWidth="1">
     <container flexDirection="row" alignItems="center" gap="4">
@@ -31,6 +35,11 @@
       <text fontSize="8" color="#0f88">XP</text>
       <text name="hud-xp" fontSize="12" fontWeight="bold" color="#0f8">0</text>
     </container>
-    <text name="btn-hint" fontSize="10" fontWeight="bold" color="#ff0" backgroundColor="#ff01" padding="3" borderRadius="4" borderColor="#ff04" borderWidth="1" cursor="pointer" hover-backgroundColor="#ff03">💡 HINT</text>
+    <container flexDirection="row" alignItems="center" gap="4">
+      <text fontSize="8" color="#88f8">PROGRESS</text>
+      <text name="hud-progress" fontSize="10" fontWeight="bold" color="#88f">0%</text>
+    </container>
+    <text name="btn-hint" fontSize="10" fontWeight="bold" color="#ff0" backgroundColor="#ff01" padding="3" borderRadius="4" borderColor="#ff04" borderWidth="1" cursor="pointer" hover-backgroundColor="#ff03">HINT</text>
+    <text name="btn-undo" fontSize="10" fontWeight="bold" color="#f80" backgroundColor="#f801" padding="3" borderRadius="4" borderColor="#f804" borderWidth="1" cursor="pointer" hover-backgroundColor="#f803">UNDO</text>
   </container>
 </container>

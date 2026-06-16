@@ -84,6 +84,18 @@ const THEMES: Theme[] = [
 interface Achievement { id: string; name: string; desc: string; check: () => boolean; }
 interface LeaderEntry { time: number; grid: string; mode: string; date: string; }
 
+// Undo stack for practice mode
+interface UndoState {
+  revealed: boolean[][];
+  flagged: boolean[][];
+  questioned: boolean[][];
+  tilesRevealed: number;
+  flagsPlaced: number;
+  combo: number;
+  comboTimer: number;
+  elapsedTime: number;
+}
+
 // ============================================================
 // GAME STATE MANAGER
 // ============================================================
@@ -96,6 +108,7 @@ class GameStateManager {
   grid: number[][] = [];
   revealed: boolean[][] = [];
   flagged: boolean[][] = [];
+  questioned: boolean[][] = [];
   rows = 8; cols = 8; mineCount = 10;
   // Timer
   elapsedTime = 0;
@@ -122,6 +135,7 @@ class GameStateManager {
     bestCombo: 0, totalHintsUsed: 0,
     dailyStreak: 0, bestDailyStreak: 0, lastDailyDate: '',
     perfectGames: 0, totalChords: 0,
+    totalUndos: 0, autoFlagGames: 0, questionsPlaced: 0,
   };
   achievements: Set<string> = new Set();
   leaderboard: LeaderEntry[] = [];
@@ -161,6 +175,7 @@ class GameStateManager {
     this.grid = Array.from({length: this.rows}, () => Array(this.cols).fill(0));
     this.revealed = Array.from({length: this.rows}, () => Array(this.cols).fill(false));
     this.flagged = Array.from({length: this.rows}, () => Array(this.cols).fill(false));
+    this.questioned = Array.from({length: this.rows}, () => Array(this.cols).fill(false));
 
     const rng = this.mode === 'daily' ? this.seededRng(this.dailySeed + this.rows * 100 + this.cols) : Math.random;
     const forbidden = new Set<string>();
@@ -193,7 +208,7 @@ class GameStateManager {
 
   reveal(r: number, c: number): 'safe' | 'mine' | 'already' {
     if (r < 0 || r >= this.rows || c < 0 || c >= this.cols) return 'already';
-    if (this.revealed[r][c] || this.flagged[r][c]) return 'already';
+    if (this.revealed[r][c] || this.flagged[r][c] || this.questioned[r][c]) return 'already';
     if (this.firstClick) {
       this.initGrid(r, c);
       this.firstClick = false;
@@ -221,14 +236,29 @@ class GameStateManager {
     return 'safe';
   }
 
-  toggleFlag(r: number, c: number): boolean {
-    if (r < 0 || r >= this.rows || c < 0 || c >= this.cols) return false;
-    if (this.revealed[r][c]) return false;
-    if (this.mode === 'noflag') return false;
-    this.flagged[r][c] = !this.flagged[r][c];
-    this.flagsPlaced += this.flagged[r][c] ? 1 : -1;
-    if (this.flagged[r][c]) this.stats.minesFlagged++;
-    return true;
+  toggleFlag(r: number, c: number): 'flag' | 'question' | 'clear' | 'none' {
+    if (r < 0 || r >= this.rows || c < 0 || c >= this.cols) return 'none';
+    if (this.revealed[r][c]) return 'none';
+    if (this.mode === 'noflag') return 'none';
+
+    if (this.flagged[r][c]) {
+      // Flag → Question mark
+      this.flagged[r][c] = false;
+      this.flagsPlaced--;
+      this.questioned[r][c] = true;
+      this.stats.questionsPlaced++;
+      return 'question';
+    } else if (this.questioned[r][c]) {
+      // Question → Clear
+      this.questioned[r][c] = false;
+      return 'clear';
+    } else {
+      // Clear → Flag
+      this.flagged[r][c] = true;
+      this.flagsPlaced++;
+      this.stats.minesFlagged++;
+      return 'flag';
+    }
   }
 
   chordReveal(r: number, c: number): 'safe' | 'mine' | 'already' {
@@ -256,6 +286,56 @@ class GameStateManager {
     return this.tilesRevealed >= this.totalSafeTiles;
   }
 
+  // Auto-flag: check if only mines remain unrevealed
+  checkAutoFlag(): boolean {
+    if (this.mode === 'noflag') return false;
+    let unrevealedSafe = 0;
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        if (!this.revealed[r][c] && this.grid[r]?.[c] !== -1 && !this.flagged[r][c]) {
+          unrevealedSafe++;
+        }
+      }
+    }
+    return unrevealedSafe === 0;
+  }
+
+  // Create undo snapshot (for practice mode)
+  createUndoSnapshot(): UndoState {
+    return {
+      revealed: this.revealed.map(row => [...row]),
+      flagged: this.flagged.map(row => [...row]),
+      questioned: this.questioned.map(row => [...row]),
+      tilesRevealed: this.tilesRevealed,
+      flagsPlaced: this.flagsPlaced,
+      combo: this.combo,
+      comboTimer: this.comboTimer,
+      elapsedTime: this.elapsedTime,
+    };
+  }
+
+  // Restore from undo snapshot
+  restoreSnapshot(snap: UndoState) {
+    this.revealed = snap.revealed.map(row => [...row]);
+    this.flagged = snap.flagged.map(row => [...row]);
+    this.questioned = snap.questioned.map(row => [...row]);
+    this.tilesRevealed = snap.tilesRevealed;
+    this.flagsPlaced = snap.flagsPlaced;
+    this.combo = snap.combo;
+    this.comboTimer = snap.comboTimer;
+    this.elapsedTime = snap.elapsedTime;
+    this.stats.totalUndos++;
+  }
+
+  getRemainingMines(): number {
+    return Math.max(0, this.mineCount - this.flagsPlaced);
+  }
+
+  getProgressPercent(): number {
+    if (this.totalSafeTiles === 0) return 0;
+    return Math.round((this.tilesRevealed / this.totalSafeTiles) * 100);
+  }
+
   findHintTile(): { r: number; c: number } | null {
     if (!this.gameStarted || this.firstClick) return null;
     const candidates: { r: number; c: number }[] = [];
@@ -275,7 +355,7 @@ class GameStateManager {
     this.mode = mode; this.difficulty = diff;
     this.rows = cfg.rows; this.cols = cfg.cols; this.mineCount = cfg.mines;
     this.timeLimit = cfg.timeLimit;
-    this.grid = []; this.revealed = []; this.flagged = [];
+    this.grid = []; this.revealed = []; this.flagged = []; this.questioned = [];
     this.elapsedTime = 0; this.timerRunning = false;
     this.tilesRevealed = 0; this.flagsPlaced = 0;
     this.firstClick = true; this.gameStarted = false;
@@ -517,6 +597,26 @@ const ACHIEVEMENTS: Achievement[] = [
   { id:'combo50', name:'Cosmic Chain', desc:'Reach a 50 combo', check:()=>GM.maxCombo>=50 },
   // ---- Theme Explorer ----
   { id:'theme_all', name:'Palette Master', desc:'Play a game in each theme', check:()=>false }, // checked separately
+  // ---- Auto-Flag ----
+  { id:'autoflag1', name:'Auto Sweep', desc:'Win with auto-flag completing the board', check:()=>GM.stats.autoFlagGames>=1 },
+  { id:'autoflag5', name:'Lazy Genius', desc:'Win 5 games via auto-flag', check:()=>GM.stats.autoFlagGames>=5 },
+  // ---- Undo (Practice) ----
+  { id:'undo1', name:'Second Chance', desc:'Use undo for the first time', check:()=>GM.stats.totalUndos>=1 },
+  { id:'undo10', name:'Time Traveler', desc:'Use undo 10 times', check:()=>GM.stats.totalUndos>=10 },
+  { id:'undo50', name:'Chronic Undoer', desc:'Use undo 50 times', check:()=>GM.stats.totalUndos>=50 },
+  // ---- Question Marks ----
+  { id:'question10', name:'Uncertain', desc:'Place 10 question marks', check:()=>GM.stats.questionsPlaced>=10 },
+  { id:'question50', name:'Indecisive', desc:'Place 50 question marks', check:()=>GM.stats.questionsPlaced>=50 },
+  // ---- Progress Milestones ----
+  { id:'games1k', name:'True Dedication', desc:'Play 1000 games', check:()=>GM.stats.games>=1000 },
+  { id:'wins500', name:'Half Grand', desc:'Win 500 games', check:()=>GM.stats.wins>=500 },
+  { id:'tiles100k', name:'Core Driller', desc:'Reveal 100,000 tiles', check:()=>GM.stats.tilesRevealed>=100000 },
+  { id:'play48h', name:'Two Full Days', desc:'Play for 48 hours total', check:()=>GM.stats.playTime>=172800 },
+  // ---- Mastery ----
+  { id:'hard50', name:'Diamond Nerves', desc:'Win 50 Hard games', check:()=>GM.stats.hardWins>=50 },
+  { id:'hard100', name:'Titanium', desc:'Win 100 Hard games', check:()=>GM.stats.hardWins>=100 },
+  { id:'streak25', name:'Legendary', desc:'25 wins in a row', check:()=>GM.stats.bestStreak>=25 },
+  { id:'streak50', name:'Mythical', desc:'50 wins in a row', check:()=>GM.stats.bestStreak>=50 },
 ];
 
 function checkAchievements(audio: AudioManager): string[] {
@@ -593,6 +693,12 @@ class AudioManager {
   playCountdown() { this.playTone(440, 0.12, 'sine', 0.12); }
   playGo() { this.playTone(880, 0.2, 'sine', 0.15); }
   playChord() { this.playTone(440, 0.1, 'sine', 0.08); this.playTone(660, 0.1, 'sine', 0.06); }
+  playQuestion() { this.playTone(500, 0.08, 'triangle', 0.08); this.playTone(400, 0.08, 'triangle', 0.05); }
+  playUndo() { this.playTone(300, 0.12, 'triangle', 0.1); this.playTone(250, 0.12, 'triangle', 0.07); }
+  playAutoFlag() {
+    const notes = [440, 523, 659, 784];
+    notes.forEach((f, i) => setTimeout(() => this.playTone(f, 0.15, 'triangle', 0.08), i * 50));
+  }
 
   playFloodReveal() {
     this.playTone(330 + Math.random() * 200, 0.15, 'sine', 0.06);
@@ -705,6 +811,7 @@ interface TileMesh {
   coverMesh: Mesh;
   numberMesh: Mesh | null;
   flagMesh: Mesh | null;
+  questionMesh: Mesh | null;
   mineMesh: Mesh | null;
   glowMesh: Mesh | null;
   r: number;
@@ -778,7 +885,7 @@ class MinefieldRenderer {
         glow.position.set(x, y, TILE_DEPTH + 0.002);
         this.group.add(glow);
 
-        this.tiles[r][c] = { base, coverMesh: cover, numberMesh: null, flagMesh: null, mineMesh: null, glowMesh: glow, r, c };
+        this.tiles[r][c] = { base, coverMesh: cover, numberMesh: null, flagMesh: null, questionMesh: null, mineMesh: null, glowMesh: glow, r, c };
       }
     }
   }
@@ -880,6 +987,25 @@ class MinefieldRenderer {
     tile.flagMesh = null;
   }
 
+  addQuestion(r: number, c: number, theme: Theme) {
+    const tile = this.tiles[r]?.[c];
+    if (!tile) return;
+    // Question mark = small sphere with different color
+    const qMat = new MeshBasicMaterial({ color: new Color('#888'), blending: AdditiveBlending });
+    const q = new Mesh(new TorusGeometry(TILE_SIZE * 0.1, TILE_SIZE * 0.03, 6, 8), qMat);
+    const pos = tile.coverMesh.position.clone();
+    q.position.set(pos.x, pos.y, TILE_DEPTH + 0.02);
+    this.group.add(q);
+    tile.questionMesh = q;
+  }
+
+  removeQuestion(r: number, c: number) {
+    const tile = this.tiles[r]?.[c];
+    if (!tile || !tile.questionMesh) return;
+    this.group.remove(tile.questionMesh);
+    tile.questionMesh = null;
+  }
+
   highlightHintTile(r: number, c: number, theme: Theme) {
     const tile = this.tiles[r]?.[c];
     if (!tile) return;
@@ -940,6 +1066,10 @@ class MinefieldRenderer {
         }
         if (tile.flagMesh) {
           tile.flagMesh.rotation.y = time * 1.5;
+        }
+        if (tile.questionMesh) {
+          tile.questionMesh.rotation.z = time * 1.2;
+          tile.questionMesh.rotation.x = Math.sin(time * 2) * 0.3;
         }
         if (tile.numberMesh) {
           tile.numberMesh.rotation.y = Math.sin(time * 0.8 + r + c) * 0.3;
@@ -1059,6 +1189,15 @@ function fmtTime(s: number): string {
   return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
+// Board positioning by difficulty (larger boards further + scaled)
+function getBoardTransform(diff: Difficulty): { y: number; z: number; scale: number } {
+  switch (diff) {
+    case 'easy':   return { y: 1.4, z: -1.5, scale: 1.0 };
+    case 'medium': return { y: 1.35, z: -1.8, scale: 0.85 };
+    case 'hard':   return { y: 1.3, z: -2.2, scale: 0.7 };
+  }
+}
+
 const LEVEL_TITLES = ['Novice','Beginner','Learner','Student','Apprentice','Adept','Skilled','Expert','Master','Grandmaster','Sage','Oracle','Titan','Legend','Neon God'];
 function getLevelTitle(level: number): string {
   const idx = Math.min(Math.floor((level - 1) / 4), LEVEL_TITLES.length - 1);
@@ -1128,6 +1267,14 @@ export class MinesweeperSystem extends createSystem({
   xrHoveredC = -1;
   // Theme tracking for achievement
   themesPlayed: Set<number> = new Set();
+  // Undo stack (practice mode)
+  undoStack: UndoState[] = [];
+  maxUndoDepth = 20;
+  // Auto-flag state
+  autoFlagTriggered = false;
+  // Fireworks timer for win celebration
+  fireworksTimer = 0;
+  fireworksCount = 0;
   // Countdown state
   countdownActive = false;
   pendingCountdownMode: GameMode = 'classic';
@@ -1259,6 +1406,7 @@ export class MinesweeperSystem extends createSystem({
     this.queries.hudPanel.subscribe('qualify', (e) => {
       this.entities.hud = e; if (e.object3D) e.object3D.visible = false;
       this.btn(e, 'btn-hint', () => { this.useHint(); });
+      this.btn(e, 'btn-undo', () => { this.useUndo(); });
     });
 
     this.queries.pausePanel.subscribe('qualify', (e) => {
@@ -1309,7 +1457,7 @@ export class MinesweeperSystem extends createSystem({
       this.btn(e, 'btn-theme-next', () => { GM.themeIndex = (GM.themeIndex + 1) % THEMES.length; this.updateSettings(); });
       this.btn(e, 'btn-reset', () => {
         localStorage.clear();
-        Object.assign(GM.stats, { games:0,wins:0,bestEasy:Infinity,bestMedium:Infinity,bestHard:Infinity,tilesRevealed:0,minesFlagged:0,minesDetonated:0,winStreak:0,bestStreak:0,playTime:0,easyWins:0,mediumWins:0,hardWins:0,bestCombo:0,totalHintsUsed:0,dailyStreak:0,bestDailyStreak:0,lastDailyDate:'',perfectGames:0,totalChords:0 });
+      Object.assign(GM.stats, { games:0,wins:0,bestEasy:Infinity,bestMedium:Infinity,bestHard:Infinity,tilesRevealed:0,minesFlagged:0,minesDetonated:0,winStreak:0,bestStreak:0,playTime:0,easyWins:0,mediumWins:0,hardWins:0,bestCombo:0,totalHintsUsed:0,dailyStreak:0,bestDailyStreak:0,lastDailyDate:'',perfectGames:0,totalChords:0,totalUndos:0,autoFlagGames:0,questionsPlaced:0 });
         GM.achievements.clear(); GM.leaderboard = []; GM.xp = 0; GM.level = 1; modeWins.clear();
         this.themesPlayed.clear();
         this.updateSettings();
@@ -1372,10 +1520,82 @@ export class MinesweeperSystem extends createSystem({
     this.showToast(`Hint! (-${HINT_COST} XP)`);
   }
 
+  useUndo() {
+    if (GM.state !== 'playing') return;
+    if (GM.mode !== 'practice') {
+      this.showToast('Undo is Practice mode only');
+      return;
+    }
+    if (this.undoStack.length === 0) {
+      this.showToast('Nothing to undo');
+      return;
+    }
+    const snap = this.undoStack.pop()!;
+    GM.restoreSnapshot(snap);
+    // Rebuild the visual board to match restored state
+    this.rebuildBoardVisuals();
+    audio.playClick();
+    this.showToast('Move undone');
+  }
+
+  pushUndoSnapshot() {
+    if (GM.mode !== 'practice') return;
+    if (this.undoStack.length >= this.maxUndoDepth) {
+      this.undoStack.shift();
+    }
+    this.undoStack.push(GM.createUndoSnapshot());
+  }
+
+  rebuildBoardVisuals() {
+    // Clear and rebuild the minefield to match current GM state
+    const transform = getBoardTransform(GM.difficulty);
+    minefield.clear();
+    minefield.build(GM.rows, GM.cols, GM.theme);
+    minefield.group.position.set(0, transform.y, transform.z);
+    minefield.group.scale.setScalar(transform.scale);
+    if (!minefield.group.parent) world.scene.add(minefield.group);
+    // Apply revealed, flagged, and questioned states
+    for (let r = 0; r < GM.rows; r++) {
+      for (let c = 0; c < GM.cols; c++) {
+        if (GM.revealed[r]?.[c]) {
+          minefield.revealTile(r, c, GM.grid[r][c], GM.theme, false);
+        } else if (GM.flagged[r]?.[c]) {
+          minefield.addFlag(r, c, GM.theme);
+        } else if (GM.questioned[r]?.[c]) {
+          minefield.addQuestion(r, c, GM.theme);
+        }
+      }
+    }
+  }
+
+  // Auto-flag remaining mines and trigger win
+  autoFlagMines() {
+    if (this.autoFlagTriggered) return;
+    this.autoFlagTriggered = true;
+    GM.stats.autoFlagGames++;
+    for (let r = 0; r < GM.rows; r++) {
+      for (let c = 0; c < GM.cols; c++) {
+        if (!GM.revealed[r]?.[c] && !GM.flagged[r]?.[c] && GM.grid[r]?.[c] === -1) {
+          GM.flagged[r][c] = true;
+          GM.flagsPlaced++;
+          minefield.addFlag(r, c, GM.theme);
+          const pos = minefield.getTileWorldPos(r, c);
+          spawnParticles(world.scene, pos.x, pos.y, pos.z, GM.theme.flag, 3, 0.03);
+        }
+      }
+    }
+    audio.playFlag();
+    this.showToast('Auto-flagged remaining mines!');
+  }
+
   startNewGame(mode: GameMode, diff: Difficulty) {
     this.clearBoard();
     this.mineExplosionQueue = [];
     this.lastWarningTick = -1;
+    this.undoStack = [];
+    this.autoFlagTriggered = false;
+    this.fireworksTimer = 0;
+    this.fireworksCount = 0;
     // Track theme usage for achievement
     this.themesPlayed.add(GM.themeIndex);
     try { localStorage.setItem('neon-mines-themes', JSON.stringify([...this.themesPlayed])); } catch {}
@@ -1384,6 +1604,7 @@ export class MinesweeperSystem extends createSystem({
       this.queueToast('Palette Master unlocked!');
       audio.playAchievement();
     }
+    const transform = getBoardTransform(diff);
     // Use countdown for timed mode
     if (mode === 'timed') {
       this.countdownActive = true;
@@ -1394,14 +1615,16 @@ export class MinesweeperSystem extends createSystem({
       GM.startGame(mode, diff);
       GM.timerRunning = false; // Don't start timer until countdown finishes
       minefield.build(GM.rows, GM.cols, GM.theme);
-      minefield.group.position.set(0, 1.4, -1.5);
+      minefield.group.position.set(0, transform.y, transform.z);
+      minefield.group.scale.setScalar(transform.scale);
       world.scene.add(minefield.group);
       this.updateVisibility();
       audio.playCountdown();
     } else {
       GM.startGame(mode, diff);
       minefield.build(GM.rows, GM.cols, GM.theme);
-      minefield.group.position.set(0, 1.4, -1.5);
+      minefield.group.position.set(0, transform.y, transform.z);
+      minefield.group.scale.setScalar(transform.scale);
       world.scene.add(minefield.group);
       this.updateVisibility();
     }
@@ -1444,16 +1667,19 @@ export class MinesweeperSystem extends createSystem({
     const e = this.entities.hud;
     if (!e) return;
     this.setText(e, 'hud-time', fmtTime(GM.elapsedTime));
-    this.setText(e, 'hud-mines', `${GM.mineCount}`);
+    this.setText(e, 'hud-remaining', `${GM.getRemainingMines()}`);
     this.setText(e, 'hud-flags', `${GM.flagsPlaced}`);
     this.setText(e, 'hud-tiles', `${GM.totalSafeTiles - GM.tilesRevealed}`);
     this.setText(e, 'hud-mode', GM.mode.toUpperCase());
+    this.setText(e, 'hud-diff', GM.difficulty.toUpperCase());
     // Combo display
     this.setText(e, 'hud-combo', `${GM.combo}`);
     const mult = GM.getComboMultiplier();
     this.setText(e, 'hud-combo-mult', `x${mult}`);
     // XP display
     this.setText(e, 'hud-xp', `${GM.xp}`);
+    // Progress display
+    this.setText(e, 'hud-progress', `${GM.getProgressPercent()}%`);
   }
 
   updateGameOver() {
@@ -1534,6 +1760,8 @@ export class MinesweeperSystem extends createSystem({
     this.setText(e, 'stat-detonated', `${GM.stats.minesDetonated}`);
     this.setText(e, 'stat-bestcombo', `${GM.stats.bestCombo}`);
     this.setText(e, 'stat-hints', `${GM.stats.totalHintsUsed}`);
+    this.setText(e, 'stat-undos', `${GM.stats.totalUndos}`);
+    this.setText(e, 'stat-autoflag', `${GM.stats.autoFlagGames}`);
     this.setText(e, 'stat-streak', `${GM.stats.winStreak}`);
     this.setText(e, 'stat-beststreak', `${GM.stats.bestStreak}`);
     this.setText(e, 'stat-playtime', `${Math.floor(GM.stats.playTime / 60)}m`);
@@ -1558,14 +1786,17 @@ export class MinesweeperSystem extends createSystem({
     if (this.countdownActive) return;
 
     if (button === 'right') {
-      if (GM.toggleFlag(r, c)) {
-        if (GM.flagged[r][c]) {
-          minefield.addFlag(r, c, GM.theme);
-          audio.playFlag();
-        } else {
-          minefield.removeFlag(r, c);
-          audio.playUnflag();
-        }
+      const result = GM.toggleFlag(r, c);
+      if (result === 'flag') {
+        minefield.addFlag(r, c, GM.theme);
+        audio.playFlag();
+      } else if (result === 'question') {
+        minefield.removeFlag(r, c);
+        minefield.addQuestion(r, c, GM.theme);
+        audio.playClick();
+      } else if (result === 'clear') {
+        minefield.removeQuestion(r, c);
+        audio.playUnflag();
       }
       return;
     }
@@ -1588,6 +1819,8 @@ export class MinesweeperSystem extends createSystem({
     }
 
     // Left click
+    // Push undo snapshot before action (practice mode)
+    this.pushUndoSnapshot();
     // Double-click detection for chord reveal
     const now = performance.now() / 1000;
     if (this.lastClickR === r && this.lastClickC === c && (now - this.lastClickTime) < this.doubleClickThreshold) {
@@ -1702,7 +1935,10 @@ export class MinesweeperSystem extends createSystem({
     this.updateGameOver();
     const newAchs = checkAchievements(audio);
     newAchs.forEach(n => this.queueToast(n + ' unlocked!'));
-    // Big win celebration particles
+    // Enhanced win celebration — spiral fireworks
+    this.fireworksTimer = 3.0;
+    this.fireworksCount = 0;
+    // Initial burst
     spawnParticles(world.scene, 0, 1.8, -1.5, '#0f0', 40, 0.18);
     spawnParticles(world.scene, -0.3, 1.6, -1.5, GM.theme.accent, 15, 0.12);
     spawnParticles(world.scene, 0.3, 1.6, -1.5, GM.theme.glow, 15, 0.12);
@@ -1833,6 +2069,28 @@ export class MinesweeperSystem extends createSystem({
       }
     }
 
+    // Auto-flag check: if only mines remain unrevealed, auto-flag them
+    if (GM.state === 'playing' && GM.gameStarted && !this.autoFlagTriggered && !GM.firstClick) {
+      if (GM.checkAutoFlag()) {
+        this.autoFlagMines();
+        if (GM.checkWin()) this.handleWin();
+      }
+    }
+
+    // Fireworks celebration (post-win)
+    if (this.fireworksTimer > 0 && (GM.state === 'won')) {
+      this.fireworksTimer -= delta;
+      this.fireworksCount += delta;
+      if (this.fireworksCount >= 0.3) {
+        this.fireworksCount = 0;
+        const angle = Math.random() * Math.PI * 2;
+        const r = 0.3 + Math.random() * 0.5;
+        const colors = [GM.theme.accent, GM.theme.glow, '#0f0', '#ff0', '#f0f', '#0ff'];
+        const col = colors[Math.floor(Math.random() * colors.length)];
+        spawnParticles(world.scene, Math.cos(angle) * r, 1.5 + Math.random() * 0.6, -1.5 + Math.sin(angle) * r * 0.3, col, 10, 0.1);
+      }
+    }
+
     // Sequential mine explosion
     if (this.mineExplosionQueue.length > 0) {
       this.mineExplosionTimer += delta;
@@ -1897,6 +2155,9 @@ export class MinesweeperSystem extends createSystem({
     }
     if (kb?.getKeyDown('KeyH') && GM.state === 'playing') {
       this.useHint();
+    }
+    if (kb?.getKeyDown('KeyZ') && GM.state === 'playing') {
+      this.useUndo();
     }
 
     // XR controller input

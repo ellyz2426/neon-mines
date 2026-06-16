@@ -1,5 +1,5 @@
 <container flexDirection="column" alignItems="center" gap="6" padding="12" backgroundColor="#000c" borderRadius="12" borderColor="#f006" borderWidth="2">
-  <text fontSize="28" fontWeight="bold" color="#f00">💥 BOOM!</text>
+  <text fontSize="28" fontWeight="bold" color="#f00">* BOOM! *</text>
   <text name="explode-msg" fontSize="12" color="#f88">You hit a mine!</text>
   <container flexDirection="column" gap="3" width="200">
     <container flexDirection="row" justifyContent="space-between">

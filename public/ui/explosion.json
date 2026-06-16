@@ -7,7 +7,7 @@
         "sourceTag": "text",
         "type": "custom",
         "children": [
-          "💥 BOOM!"
+          "* BOOM! *"
         ],
         "properties": {
           "fontsize": "28",
@@ -312,7 +312,7 @@
       },
       "end": {
         "line": 1,
-        "column": 68
+        "column": 69
       }
     },
     "uid-3": {
